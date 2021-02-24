@@ -81,7 +81,7 @@ public class MainFrame extends JFrame {
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.setVisible(true);
                 makeMenuBar(frame);
-                makeButton(frame, w/2-50, h-150, 100, 50);
+                makeButton(frame, w/2-50, h-50, 100, 100);
                 textArea = new JTextArea(10, 10);
                 frame.add(textArea);
             }
@@ -135,14 +135,19 @@ public class MainFrame extends JFrame {
             }
         });
     }
-
+    /**
+     * Creates Button
+     * Used to finish and export comments
+     *
+     * @param frame Jframe from instantiation
+     */
     public void makeButton(JFrame frame, int x, int y, int w, int h) {
         Comment cmnt = new Comment();
         PriorityQueue<Comment> pq = Comment.querry("", 1000);
 
-        JButton button = new JButton("button");
+        JButton button = new JButton("Export Comments");
         button.setBounds(x, y, w, h);
-        frame.add(button);
+        frame.add(button, BorderLayout.SOUTH);
         button.addActionListener(new ActionListener() {
             //Button clicked
             @Override
