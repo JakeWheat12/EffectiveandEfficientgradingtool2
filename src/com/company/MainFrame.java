@@ -20,7 +20,7 @@ public class MainFrame extends JFrame {
     protected final String[] EXTENSION = new String[]{"pdf", "docx"};
     protected final String[] DESCRIPTION = new String[]{"PDF (*.pdf)", "Word Document (*.docx)"};
 
-    // Menubars
+    // Menu bars
     private JMenuBar menuBar;
     private JMenu menu, subMenu;
     private JMenuItem[] _file, _subFile;
