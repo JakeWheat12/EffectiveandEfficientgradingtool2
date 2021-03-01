@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.PriorityQueue;
 
 /**
@@ -19,7 +20,8 @@ public class MainFrame extends JFrame {
     // Constants
     protected final String[] EXTENSION = new String[]{"pdf", "docx"};
     protected final String[] DESCRIPTION = new String[]{"PDF (*.pdf)", "Word Document (*.docx)"};
-
+    //Lists
+    public JList list;
     // Menu bars
     private JMenuBar menuBar;
     private JMenu menu;
@@ -51,6 +53,7 @@ public class MainFrame extends JFrame {
      * Creates the first window to be displayed.
      */
     public void makeFrame(int w,  int h) {
+        PriorityQueue<Comment> pq = Comment.querry("", 1000);
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 JFrame frame = new MainFrame("Grading Tool");
@@ -60,12 +63,33 @@ public class MainFrame extends JFrame {
                 makeMenuBar(frame);
 
                 // refresh button
-                makeButton(frame, "Refresh Comments" ,w/2-50, h-50, 100, 100);
-                textArea = new JTextArea(1, 1);
-                textArea.setSize(10, 10);
-                frame.add(textArea);
+                makeButton_Refesh(frame, "Refresh Comments");
+                makeCommentField(frame, pq);
+
             }
         });
+    }
+
+    public void makeCommentField(JFrame frame, PriorityQueue<Comment> pq) {
+//        DefaultListModel<String> l1 = new DefaultListModel<>();
+//        l1.addElement("Item1");
+//        l1.addElement("Item2");
+//        l1.addElement("Item3");
+//        l1.addElement("Item4");
+
+        //@todo make JList show
+        list = new JList(pq.toArray());
+        add(list);
+        list.setBounds(100, 100,100, 100);
+        list.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        list.setLayoutOrientation(JList.VERTICAL);
+        list.setVisibleRowCount(-1);
+
+        frame.add(list, BorderLayout.WEST);
+        add(new JScrollPane(list));
+
+        JScrollPane listScroller = new JScrollPane(list);
+        listScroller.setPreferredSize(new Dimension(250, 80));
     }
 
     /**
@@ -105,6 +129,11 @@ public class MainFrame extends JFrame {
 
                 //@todo implement saveDialog
                 int option = fc.showSaveDialog(frame);
+                if (option == JFileChooser.APPROVE_OPTION) {
+
+                    File fileToSave = fc.getSelectedFile();
+                    System.out.println("Save as file: " + fileToSave.getAbsolutePath());
+                }
             }
         });
     }
@@ -114,12 +143,11 @@ public class MainFrame extends JFrame {
      *
      * @param frame Jframe from instantiation
      */
-    public void makeButton(JFrame frame, String name , int x, int y, int w, int h) {
+    public void makeButton_Refesh(JFrame frame, String name) {
         Comment cmnt = new Comment();
-        PriorityQueue<Comment> pq = Comment.querry("", 1000);
+
 
         JButton button = new JButton(name);
-        button.setBounds(x, y, w, h);
         frame.add(button, BorderLayout.SOUTH);
         button.addActionListener(new ActionListener() {
 
@@ -128,9 +156,7 @@ public class MainFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // test code
-                if (pq.peek() == null)
-                    textArea.append("Queue Empty\n");
-                else textArea.append(pq.poll().getText() + "\n");
+//              @todo make JList refresh on button push
             }
         });
     }
