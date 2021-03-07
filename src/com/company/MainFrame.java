@@ -56,7 +56,7 @@ public class MainFrame extends JFrame {
         PriorityQueue<Comment> pq = Comment.querry("", 1000);
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                JFrame frame = new MainFrame("Grading Tool");
+                JFrame frame = new JFrame("Grading Tool");        //made this 'JFrame' instead of 'MainFrame'
                 frame.setSize(w,h);
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.setVisible(true);
@@ -85,11 +85,13 @@ public class MainFrame extends JFrame {
         list.setLayoutOrientation(JList.VERTICAL);
         list.setVisibleRowCount(-1);
 
-        frame.add(list, BorderLayout.WEST);
-        add(new JScrollPane(list));
 
-        JScrollPane listScroller = new JScrollPane(list);
-        listScroller.setPreferredSize(new Dimension(250, 80));
+
+        JPanel panel = new JPanel();
+        panel.add(list);
+        frame.add(panel);
+
+
     }
 
     /**
@@ -152,6 +154,7 @@ public class MainFrame extends JFrame {
         button.addActionListener(new ActionListener() {
 
             //@todo connect to database
+
             //Button clicked
             @Override
             public void actionPerformed(ActionEvent e) {
