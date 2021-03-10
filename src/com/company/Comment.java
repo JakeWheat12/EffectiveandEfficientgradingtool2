@@ -85,5 +85,14 @@ public class Comment implements Comparable<Comment>{
         //@todo implement method
     }
 
+    /** A method to return content of Comment
+     *
+     * @return
+     */
+    @Override
+    public String toString() {
+        return this.text;
+    }
+
 
 }

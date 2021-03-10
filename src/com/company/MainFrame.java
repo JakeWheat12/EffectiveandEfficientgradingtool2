@@ -20,7 +20,7 @@ public class MainFrame extends JFrame {
     // Constants
     protected final String[] EXTENSION = new String[]{"pdf", "docx"};
     protected final String[] DESCRIPTION = new String[]{"PDF (*.pdf)", "Word Document (*.docx)"};
-    //Lists
+    // Lists
     public JList list;
     // Menu bars
     private JMenuBar menuBar;
@@ -30,6 +30,7 @@ public class MainFrame extends JFrame {
     // Container
     Container c;
     JTextArea textArea;
+
     /**
      * Empty constructor
      */
@@ -53,16 +54,22 @@ public class MainFrame extends JFrame {
      * Creates the first window to be displayed.
      */
     public void makeFrame(int w,  int h) {
+        // create priority queue
         PriorityQueue<Comment> pq = Comment.querry("", 1000);
+
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 JFrame frame = new JFrame("Grading Tool");        //made this 'JFrame' instead of 'MainFrame'
+                frame.getContentPane().setBackground(new Color(82, 76, 76));
                 frame.setSize(w,h);
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.setVisible(true);
+                frame.setLocationRelativeTo(null);
+
+                // menubar creation
                 makeMenuBar(frame);
 
-                // refresh button
+                // refresh button creation
                 makeButton_Refesh(frame, "Refresh Comments");
                 makeCommentField(frame, pq);
 
@@ -77,19 +84,21 @@ public class MainFrame extends JFrame {
 //        l1.addElement("Item3");
 //        l1.addElement("Item4");
 
-        //@todo make JList show
         list = new JList(pq.toArray());
-        add(list);
+
+        //@todo set a size that's rescalalble
         list.setBounds(100, 100,100, 100);
+
+        //@todo list.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION); is not working
         list.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+
         list.setLayoutOrientation(JList.VERTICAL);
         list.setVisibleRowCount(-1);
 
-
-
         JPanel panel = new JPanel();
+        panel.setBackground(new Color(82, 76, 76));
         panel.add(list);
-        frame.add(panel);
+        frame.add(panel, BorderLayout.WEST);
 
 
     }
@@ -140,17 +149,19 @@ public class MainFrame extends JFrame {
         });
     }
     /**
-     * Creates Button
-     * Used to finish and export comments
+     * Creates "Refresh Comments" button
+     * Used to refresh comments on Jlist
      *
      * @param frame Jframe from instantiation
      */
     public void makeButton_Refesh(JFrame frame, String name) {
         Comment cmnt = new Comment();
 
-
         JButton button = new JButton(name);
-        frame.add(button, BorderLayout.SOUTH);
+        JPanel panel = new JPanel();
+        panel.setBackground(new Color(82, 76, 76));
+        panel.add(button);
+        frame.add(panel, BorderLayout.SOUTH);
         button.addActionListener(new ActionListener() {
 
             //@todo connect to database

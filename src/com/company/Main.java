@@ -16,7 +16,7 @@ public class Main {
     public static void main(String[] args) {
 
         MainFrame frame = new MainFrame();
-        frame.makeFrame(600, 1000);
+        frame.makeFrame(800, 600);
 
 
 //        while(true) {
