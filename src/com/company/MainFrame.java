@@ -18,19 +18,24 @@ import java.util.PriorityQueue;
 public class MainFrame extends JFrame {
 
     // Constants
-    protected final String[] EXTENSION = new String[]{"pdf", "docx"};
-    protected final String[] DESCRIPTION = new String[]{"PDF (*.pdf)", "Word Document (*.docx)"};
-    // Lists
+    protected final String TITLE = "Grading Tool"; // title of the app
+    protected final String[] EXTENSION = new String[]{"pdf", "docx"}; // menubar constant
+    protected final String[] DESCRIPTION = new String[]{"PDF (*.pdf)", "Word Document (*.docx)"}; // menubar constant
+    // JLists
     public JList list_refreshed;
     public JList list_selected;
     // Menu bars
     private JMenuBar menuBar;
     private JMenu menu;
     private JMenuItem[] _file, _subFile;
+    // Buttons
+    public JButton button_RC;
+    public JButton button_Finalize;
+    public JButton button_Delete;
+    public JButton button_Confirm;
+    // TextArea
+    public TextArea tArea;
 
-    // Container
-    Container c;
-    JTextArea textArea;
 
     /**
      * Empty constructor
@@ -51,8 +56,10 @@ public class MainFrame extends JFrame {
 
     }
 
-    /**
-     * Creates the first window to be displayed.
+    /**  Creates the first window to be displayed.
+     *
+     * @param w
+     * @param h
      */
     public void makeFrame(int w,  int h) {
         // create priority queue
@@ -60,27 +67,67 @@ public class MainFrame extends JFrame {
 
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                JFrame frame = new JFrame("Grading Tool");        //made this 'JFrame' instead of 'MainFrame'
+                JFrame frame = new JFrame(TITLE);        //made this 'JFrame' instead of 'MainFrame'
                 // new Color(82, 76, 76)
-                frame.getContentPane().setBackground(Color.WHITE);
+                frame.getContentPane().setBackground(new Color(82, 76, 76)); // main frame is white for viewing layout purpose
                 frame.setSize(w,h);
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.setLocationRelativeTo(null);
 
                 //makes 3 bottom buttons' panel
-                JPanel panel = new JPanel();
-                panel.setBackground(new Color(82, 76, 76));
-                frame.add(panel, BorderLayout.SOUTH);
+                JPanel panel_bottom = new JPanel();
+                panel_bottom.setBackground(new Color(82, 76, 76));
+
+
+                // left panel
+                JPanel panel_left = new JPanel();
+                panel_left.setBackground(new Color(82, 76, 76));
+
+//                panel_left.setBackground(new Color(82, 55, 173));
+
+                // right panel
+                JPanel panel_right = new JPanel();
+                panel_right.setBackground(new Color(82, 76, 76));
+//                panel_right.setBackground(new Color(0, 0, 0));
+
+                // right sub panels
+                JPanel panel_right_sub1 = new JPanel();
+                JPanel panel_right_sub2 = new JPanel();
+                JPanel panel_right_sub3 = new JPanel();
+                panel_right_sub1.setLayout(new BoxLayout(panel_right_sub1, BoxLayout.X_AXIS));
+                panel_right_sub2.setLayout(new BoxLayout(panel_right_sub2, BoxLayout.X_AXIS));
+                panel_right_sub3.setLayout(new BoxLayout(panel_right_sub3, BoxLayout.X_AXIS));
+                panel_right_sub1.setBackground(Color.WHITE);
+                panel_right_sub2.setBackground(Color.GREEN);
+                panel_right_sub3.setBackground(Color.CYAN);
+
+                panel_right.setLayout(new BoxLayout(panel_right, BoxLayout.Y_AXIS));
 
                 // menubar creation
                 makeMenuBar(frame);
 
-                //Call the create field, textArea and button methods
-                makeButton_Refresh(frame, panel, "Refresh Comments");
-                makeButton_Finalize(frame, panel, "Finalize");
-                makeButton_Delete(frame, panel, "Delete");
-                makeCommentField(frame, pq);
-                makeUserCommentField(frame);
+                // Bottom
+                makeButton_Refresh(panel_bottom, "Refresh Comments");
+                makeButton_Finalize(panel_bottom, "Finalize");
+                makeButton_Delete(panel_bottom, "Delete");
+
+                // Left
+                makeCommentField(frame, panel_left ,pq);
+
+                // Right
+                makeUserCommentField(panel_right_sub1);
+                makeUC_Button(panel_right_sub2, "Confirm");
+                makeSelectedComment(panel_right_sub3);
+
+                // add sub panels
+                panel_right.add(panel_right_sub1);
+                panel_right.add(panel_right_sub2);
+                panel_right.add(panel_right_sub3);
+
+                // add panels
+                frame.add(panel_left, BorderLayout.CENTER);
+                frame.add(panel_right, BorderLayout.EAST);
+                frame.add(panel_bottom, BorderLayout.SOUTH);
 
                 // frame.pack();
                 frame.setVisible(true);
@@ -88,7 +135,18 @@ public class MainFrame extends JFrame {
         });
     }
 
-    public void makeCommentField(JFrame frame, PriorityQueue<Comment> pq) {
+    // ************************* Left Panel *************************
+
+    /**
+     *
+     * @param frame
+     * @param panel_left
+     * @param pq
+     */
+    //@todo get rid of JFrame reference
+    public void makeCommentField(JFrame frame, JPanel panel_left, PriorityQueue<Comment> pq) {
+
+        DefaultListModel<Comment> mode = new DefaultListModel<>();
 
         list_refreshed = new JList(pq.toArray());
         //@todo set a size that's rescalalble
@@ -100,40 +158,40 @@ public class MainFrame extends JFrame {
         list_refreshed.setLayoutOrientation(JList.VERTICAL);
         list_refreshed.setVisibleRowCount(-1);
 
-        JPanel panel = new JPanel();
-        panel.setBackground(new Color(82, 00, 76));
-        panel.add(list_refreshed);
-        frame.add(panel, BorderLayout.WEST);
+        panel_left.add(list_refreshed);
 
 
     }
 
+    // ************************* Right Panel *************************
 
-    public void makeUserCommentField(JFrame frame) {
+    /**
+     * Creates user custom comment field
+     * @param frame
+     * @param panel_right
+     */
+    public void makeUserCommentField(JPanel panel_right_sub1) {
 
         // @todo get rid of scroller
-        TextArea tArea = new TextArea(10, 25);
+        tArea = new TextArea(10, 25);
         tArea.setText("Enter Custom Comment...");
-
-        JPanel panel = new JPanel();
-        panel.setBackground(new Color(82, 00, 76));
-        panel.add(tArea);
+        panel_right_sub1.add(tArea, BoxLayout.X_AXIS);
 
 
-        makeUC_Button(frame, panel, "Confirm");
-
-        frame.add(panel, BorderLayout.EAST);
     }
 
-    //User made comments button
+    /**
+     * Creates confirm button for user made comments
+     * @param frame
+     * @param panel_right
+     * @param name
+     */
     // @todo make it appear below makeUserCommentField
-    public void makeUC_Button(JFrame frame, JPanel panel, String name) {
+    public void makeUC_Button(JPanel panel_right_sub2, String name) {
 
-        JButton button = new JButton(name);
-
-        panel.add(button, BorderLayout.SOUTH);
-
-        button.addActionListener(new ActionListener() {
+        button_Confirm = new JButton(name);
+        panel_right_sub2.add(button_Confirm, BoxLayout.X_AXIS);
+        button_Confirm.addActionListener(new ActionListener() {
             //@todo send it to the purple box
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -142,24 +200,27 @@ public class MainFrame extends JFrame {
         });
     }
 
-    //Finalize button
-    public void makeButton_Finalize(JFrame frame, JPanel panel, String name) {
-        JButton button = new JButton(name);
-        panel.add(button);
-    }
+    public void makeSelectedComment(JPanel panel_right_sub3) {
+        // temporary code
+        ArrayList<String> cmnt = new ArrayList<>();
+        //@todo size
+        cmnt.add("Test 111111111111111111111111111111111111111111111111111111");
+        cmnt.add("Test 2222222222222222222222222222222222222222222222222222");
+        cmnt.add("Test 3333333333333333333333333333333333333333333333333333");
+        for (int i=0; i<40; i++) {
+            int random= (int)(Math.random()*100);
+            cmnt.add("" + random);
+        }
 
-    //Delete button
-    public void makeButton_Delete(JFrame frame, JPanel panel, String name) {
-        JButton button = new JButton(name);
-        panel.add(button);
-    }
-    public void makeSelectedComment(JFrame frame, JPanel panel) {
-        ArrayList<Comment> cmnt = new ArrayList<>();
+
         list_selected = new JList(cmnt.toArray());
-
-        panel.add(list_selected);
-        frame.add(panel, BorderLayout.SOUTH);
+        list_selected.setPreferredSize(new Dimension(300, 750));
+        list_selected.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        list_selected.setLayoutOrientation(JList.VERTICAL);
+        list_selected.setVisibleRowCount(-1);
+        panel_right_sub3.add(list_selected, BoxLayout.X_AXIS);
     }
+    //  ************************* Bottom Buttons *************************
 
     /**
      * Creates "Refresh Comments" button
@@ -167,13 +228,13 @@ public class MainFrame extends JFrame {
      *
      * @param frame Jframe from instantiation
      */
-    public void makeButton_Refresh(JFrame frame, JPanel panel, String name) {
+    public void makeButton_Refresh(JPanel panel, String name) {
         Comment cmnt = new Comment();
 
-        JButton button = new JButton(name);
+        button_RC = new JButton(name);
 
-        panel.add(button, BorderLayout.WEST);
-        button.addActionListener(new ActionListener() {
+        panel.add(button_RC, BorderLayout.WEST);
+        button_RC.addActionListener(new ActionListener() {
 
             //@todo connect to database
 
@@ -182,10 +243,23 @@ public class MainFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 // test code
 //              @todo make JList refresh on button push
+
             }
         });
     }
+    //Finalize button
+    public void makeButton_Finalize(JPanel panel, String name) {
+        button_Finalize = new JButton(name);
+        panel.add(button_Finalize);
+    }
 
+    //Delete button
+    public void makeButton_Delete(JPanel panel, String name) {
+        button_Delete = new JButton(name);
+        panel.add(button_Delete);
+    }
+
+    // ************************* Menu bar *************************
 
     /**
      * Creates menu bars
