@@ -12,13 +12,21 @@ public class Comment implements Comparable<Comment>{
     private String category;
     private int positivity;
 
-    public Comment(){
+    public Comment() {
         // temporary initialization
         text = "";
         category =  "";
-        this.positivity = -1;
+        positivity = -1;
     }
-    public Comment(String txt, String ctgry, int pstvty){
+
+    public Comment(String txt) {
+        text = txt;
+        category = "";
+        positivity = -1;
+
+    }
+
+    public Comment(String txt, String ctgry, int pstvty) {
         this.text = txt;
         this.category = ctgry;
         this.positivity = pstvty;
@@ -55,7 +63,7 @@ public class Comment implements Comparable<Comment>{
      * @return the resulting list of comments gathered from the querry
      */
     // this method is static for testing purpose
-    public static PriorityQueue<Comment> querry(String subject, int positivity){
+    public static PriorityQueue<Comment> query(String subject, int positivity){
         PriorityQueue<Comment> list = new PriorityQueue<Comment>();
         //@todo remove these example comments and add connectivity with the database to get actual comments
         list.add(new Comment("Test0", "Computer Science", 0));
