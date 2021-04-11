@@ -18,11 +18,5 @@ public class Main {
         MainFrame frame = new MainFrame();
         frame.makeFrame(800, 1000);
 
-
-//        while(true) {
-//            Point p = MouseInfo.getPointerInfo().getLocation();
-//            System.out.println(p.x + " " + p.y);
-//        }
-
     }
 }

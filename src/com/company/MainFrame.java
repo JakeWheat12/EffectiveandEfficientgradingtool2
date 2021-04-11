@@ -165,14 +165,14 @@ public class MainFrame extends JFrame {
             test.add("test");
         }
         list_refreshed = new JList(test.toArray());
-        //@todo set a size that's rescalalble
-        list_refreshed.setPreferredSize(new Dimension(400, 800));
+        //@todo set a size that's rescalable
+        list_refreshed.setPreferredSize(new Dimension(400,900));
 
         //@todo list.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION); is not working
         list_refreshed.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
         list_refreshed.setLayoutOrientation(JList.VERTICAL);
-        list_refreshed.setVisibleRowCount(-1);
+        list_refreshed.setVisibleRowCount(45);
 
         scroll_refreshed = new JScrollPane(list_refreshed);
         panel_left.add(scroll_refreshed);
@@ -191,11 +191,11 @@ public class MainFrame extends JFrame {
         tField.setText("Enter Custom Comment...");
         tField.setText("Override");
         panel_right_sub1.add(tField, BoxLayout.X_AXIS);
+        panel_right_sub1.setBackground(Color.CYAN);
+        panel_right_sub1.setPreferredSize(new Dimension(100, 100));
+        panel_right_sub1.setMaximumSize(new Dimension(300, 300));   //
 
         JTextField tt = new JTextField();
-
-
-
     }
 
     // 2
