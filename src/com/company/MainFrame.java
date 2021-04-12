@@ -7,6 +7,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -128,6 +130,8 @@ public class MainFrame extends JFrame {
 
                 // Right
                 makeUserCommentField();
+                JButton Button_Clear = new JButton("Clear  ");
+                makeButtonUC_Clear("Clear  ", Button_Clear);
                 makeUC_Button("Confirm");
                 makeSelectedComment();
 
@@ -162,7 +166,7 @@ public class MainFrame extends JFrame {
         ArrayList<String> test = new ArrayList<>();
 
         for (int i=0; i<50; i++) {
-            test.add("test");
+            test.add("test " + i);
         }
         list_refreshed = new JList(test.toArray());
         //@todo set a size that's rescalable
@@ -173,8 +177,34 @@ public class MainFrame extends JFrame {
 
         list_refreshed.setLayoutOrientation(JList.VERTICAL);
         list_refreshed.setVisibleRowCount(45);
-
         scroll_refreshed = new JScrollPane(list_refreshed);
+        list_refreshed.addMouseListener(new MouseListener() {
+            //Mouse Listener Interface
+            @Override
+            public void mouseClicked(MouseEvent e) { //On click
+                commentList.addElement(new Comment(test.get(list_refreshed.getSelectedIndex())));
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
         panel_left.add(scroll_refreshed);
     }
 
@@ -229,6 +259,16 @@ public class MainFrame extends JFrame {
                     commentList.addElement(new Comment(tField.getText()));
                     tField.setText(""); // reset the textfield
                 }
+            }
+        });
+    }
+    public void makeButtonUC_Clear(String name, JButton button_Clear) {
+        panel_right_sub2.add(button_Clear, BoxLayout.X_AXIS);
+        // deletes from SelectedComment
+        button_Clear.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                tField.setText(""); // reset the textfield
             }
         });
     }
