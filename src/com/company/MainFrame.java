@@ -6,10 +6,13 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.PriorityQueue;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.PriorityQueue;
 
 /**
  * @todo: description
@@ -43,7 +46,7 @@ public class MainFrame extends JFrame {
     // JPanels
     public JPanel panel_left, panel_right, panel_bottom;
     public JPanel panel_right_sub1, panel_right_sub2, panel_right_sub3;
-    // DefeaultListModels
+    // DefaultListModels
     DefaultListModel<Comment> commentList;
 
 
@@ -61,7 +64,6 @@ public class MainFrame extends JFrame {
      */
     public MainFrame(String title) {
         super(title);
-
         setLayout(new BorderLayout());
 
     }
@@ -342,6 +344,21 @@ public class MainFrame extends JFrame {
     public void makeButton_Finalize(String name) {
         button_Finalize = new JButton(name);
         panel_bottom.add(button_Finalize);
+
+        button_Finalize.addActionListener(new ActionListener() {
+
+            //Button clicked
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+
+
+                List<Object> a = Arrays.asList(commentList.toArray());
+
+
+
+            }
+        });
     }
 
     //Delete button
