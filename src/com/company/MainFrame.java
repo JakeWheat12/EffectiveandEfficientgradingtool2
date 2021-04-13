@@ -5,10 +5,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -90,18 +87,18 @@ public class MainFrame extends JFrame {
 
                 //makes 3 bottom buttons' panel
                 panel_bottom = new JPanel();
-                panel_bottom.setBackground(Color.black);
+                panel_bottom.setBackground(Color.DARK_GRAY);
 
 
                 // left panel
                 panel_left = new JPanel();
-                panel_left.setBackground(Color.ORANGE);
+                panel_left.setBackground(Color.DARK_GRAY);
 
 //                panel_left.setBackground(new Color(82, 55, 173));
 
                 // right panel
                 panel_right = new JPanel();
-                panel_right.setBackground(Color.blue);
+                panel_right.setBackground(Color.DARK_GRAY);
 //                panel_right.setBackground(new Color(0, 0, 0));
 
                 // right sub panels
@@ -219,11 +216,20 @@ public class MainFrame extends JFrame {
         // @todo get rid of scroller
         tField = new TextField("Test", 5);
         tField.setText("Enter Custom Comment...");
-        tField.setText("Override");
         panel_right_sub1.add(tField, BoxLayout.X_AXIS);
         panel_right_sub1.setBackground(Color.CYAN);
         panel_right_sub1.setPreferredSize(new Dimension(100, 100));
         panel_right_sub1.setMaximumSize(new Dimension(300, 300));   //
+        tField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    commentList.addElement(new Comment(tField.getText()));
+                    tField.setText("");
+                }
+            }
+        });
+
 
         JTextField tt = new JTextField();
     }
@@ -254,10 +260,12 @@ public class MainFrame extends JFrame {
                     commentList.remove(0);
                     commentList.addElement(new Comment(tField.getText()));
                     tField.setText("");
+                    tField.requestFocusInWindow();
                 }
                 else {
                     commentList.addElement(new Comment(tField.getText()));
                     tField.setText(""); // reset the textfield
+                    tField.requestFocusInWindow();
                 }
             }
         });
@@ -269,6 +277,7 @@ public class MainFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 tField.setText(""); // reset the textfield
+                tField.requestFocusInWindow();
             }
         });
     }
