@@ -303,6 +303,8 @@ public class MainFrame extends JFrame {
         list_selected.setVisibleRowCount(-1);
         scroll_selected = new JScrollPane(list_selected);
 
+
+
 //        panel_right_sub3.add(list_selected, BoxLayout.X_AXIS);
         panel_right_sub3.add(scroll_selected);
 
@@ -418,7 +420,20 @@ public class MainFrame extends JFrame {
                 int option = fc.showSaveDialog(frame);
                 if (option == JFileChooser.APPROVE_OPTION) {
 
+                    // @todo
+                    // 1. get the list of selected comments + the path
+                    // 2. send it to CreatePDF
+                    // 3. create AND save PDF using CreatePDF's method
+
+                    // temp for getting directory
                     File fileToSave = fc.getSelectedFile();
+
+                    // save as pdf
+                    try {
+                        CreatePDF.createPDF(fileToSave.getAbsolutePath());
+                    } catch (IOException ioException) {
+                        ioException.printStackTrace();
+                    }
                     System.out.println("Save as file: " + fileToSave.getAbsolutePath());
                 }
             }
