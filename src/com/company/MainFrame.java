@@ -35,7 +35,7 @@ public class MainFrame extends JFrame {
     // Menu bars
     private JMenuBar menuBar;
     private JMenu menu;
-    private JMenuItem[] _file, _subFile;
+    private JMenuItem[] _file;
     // Buttons
     public JButton button_RC;
     public JButton button_Finalize;
@@ -48,7 +48,8 @@ public class MainFrame extends JFrame {
     public JPanel panel_right_sub1, panel_right_sub2, panel_right_sub3;
     // DefaultListModels
     DefaultListModel<Comment> commentList;
-
+    // booleans
+    private boolean first = true;
 
     /**
      * Empty constructor
@@ -131,7 +132,7 @@ public class MainFrame extends JFrame {
                 makeUserCommentField();
                 JButton Button_Clear = new JButton("Clear  ");
                 makeButtonUC_Clear("Clear  ", Button_Clear);
-                makeUC_Button("Confirm");
+                makeAdd_Button("Add");
                 makeSelectedComment();
 
                 // add sub panels
@@ -145,7 +146,6 @@ public class MainFrame extends JFrame {
                 frame.add(panel_bottom, BorderLayout.SOUTH);
 
 
-//                frame.pack();
                 frame.setVisible(true);
             }
         });
@@ -157,7 +157,6 @@ public class MainFrame extends JFrame {
      *
      * @param pq
      */
-    //@todo Make JScrollPane appear
     public void makeCommentField(PriorityQueue<Comment> pq) {
 
         DefaultListModel<String> mode = new DefaultListModel<>();
@@ -171,34 +170,33 @@ public class MainFrame extends JFrame {
         //@todo set a size that's rescalable
         list_refreshed.setPreferredSize(new Dimension(400,900));
 
-        //@todo list.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION); is not working
         list_refreshed.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
         list_refreshed.setLayoutOrientation(JList.VERTICAL);
         list_refreshed.setVisibleRowCount(45);
         scroll_refreshed = new JScrollPane(list_refreshed);
         list_refreshed.addMouseListener(new MouseListener() {
+
             //Mouse Listener Interface
             @Override
-            public void mouseClicked(MouseEvent e) { //On click
-                commentList.addElement(new Comment(test.get(list_refreshed.getSelectedIndex())));
+            public void mouseClicked(MouseEvent e) {
             }
-
             @Override
             public void mousePressed(MouseEvent e) {
-
+                if (first){
+                    first = false;
+                    commentList.remove(0);
+                }
+                commentList.addElement(new Comment(test.get(list_refreshed.getSelectedIndex())));
             }
-
             @Override
             public void mouseReleased(MouseEvent e) {
 
             }
-
             @Override
             public void mouseEntered(MouseEvent e) {
 
             }
-
             @Override
             public void mouseExited(MouseEvent e) {
 
@@ -238,37 +236,32 @@ public class MainFrame extends JFrame {
 
     // 2
     /**
-     * Creates confirm button for user made comments
+     * Creates Add button for user made comments
      * @param name
      */
     // @todo make it appear below makeUserCommentField
-    public void makeUC_Button(String name) {
+    public void makeAdd_Button(String name) {
 
         button_Confirm = new JButton(name);
         panel_right_sub2.add(button_Confirm, BoxLayout.X_AXIS);
         button_Confirm.addActionListener(new ActionListener() {
 
-            // temp boolean
-            boolean first = true;
             // Sends the User Comment to makeSelectedComment
             @Override
             public void actionPerformed(ActionEvent e) {
 
                 if (tField.getText().length() == 0) { // if empty string aka error, skip
+                    tField.requestFocusInWindow();
                     return;
                 }
+                // reset the textfield
                 if (first){
                     first = false;
                     commentList.remove(0);
-                    commentList.addElement(new Comment(tField.getText()));
-                    tField.setText("");
-                    tField.requestFocusInWindow();
                 }
-                else {
-                    commentList.addElement(new Comment(tField.getText()));
-                    tField.setText(""); // reset the textfield
-                    tField.requestFocusInWindow();
-                }
+                commentList.addElement(new Comment(tField.getText()));
+                tField.setText("");
+                tField.requestFocusInWindow();
             }
         });
     }
@@ -352,13 +345,25 @@ public class MainFrame extends JFrame {
             //Button clicked
             @Override
             public void actionPerformed(ActionEvent e) {
+                JFileChooser fc = new JFileChooser();
+                FileFilter filter1 = new FileNameExtensionFilter(DESCRIPTION[0], EXTENSION[0]);
+                fc.setAcceptAllFileFilterUsed(false);
+                fc.setFileFilter(filter1);
 
+                int option = fc.showSaveDialog(frame);
+                if (option == JFileChooser.APPROVE_OPTION) {
 
+                    // temp for getting directory
+                    File fileToSave = fc.getSelectedFile();
 
-                List<Object> a = Arrays.asList(commentList.toArray());
-
-
-
+                    // save as pdf
+                    try {
+                        CreatePDF.createPDF_saveAs(fileToSave.getAbsolutePath(), Helper.toArrayList(commentList));
+                    } catch (IOException ioException) {
+                        ioException.printStackTrace();
+                    }
+                    System.out.println("Save as file: " + fileToSave.getAbsolutePath());
+                }
             }
         });
     }
@@ -416,14 +421,8 @@ public class MainFrame extends JFrame {
                 fc.setFileFilter(filter1);
                 fc.setFileFilter(filter2);
 
-                //@todo implement saveDialog
                 int option = fc.showSaveDialog(frame);
                 if (option == JFileChooser.APPROVE_OPTION) {
-
-                    // @todo
-                    // 1. get the list of selected comments + the path
-                    // 2. send it to CreatePDF
-                    // 3. create AND save PDF using CreatePDF's method
 
                     // temp for getting directory
                     File fileToSave = fc.getSelectedFile();
