@@ -430,7 +430,7 @@ public class MainFrame extends JFrame {
 
                     // save as pdf
                     try {
-                        CreatePDF.createPDF(fileToSave.getAbsolutePath());
+                        CreatePDF.createPDF_saveAs(fileToSave.getAbsolutePath(), Helper.toArrayList(commentList));
                     } catch (IOException ioException) {
                         ioException.printStackTrace();
                     }
