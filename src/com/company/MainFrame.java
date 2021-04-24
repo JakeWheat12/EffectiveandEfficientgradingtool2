@@ -24,9 +24,9 @@ public class MainFrame extends JFrame {
     // JFrame
     JFrame frame;
     // Constants
-    protected final String TITLE = "Grading Tool"; // title of the app
+    protected final String TITLE = "Comment Generator"; // title of the app //TODO(DU) update the name
     protected final String[] EXTENSION = new String[]{"pdf", "docx"}; // menubar constant
-    protected final String[] DESCRIPTION = new String[]{"PDF (*.pdf)", "Word Document (*.docx)"}; // menubar constant
+    protected final String[] DESCRIPTION = new String[]{"PDF (*.pdf)", "Word Document (*.docx)"}; // menubar constant   //TODO (DU): get ride of WORD?
     // JLists
     public JList list_refreshed;
     public JList list_selected;
@@ -35,7 +35,7 @@ public class MainFrame extends JFrame {
     // Menu bars
     private JMenuBar menuBar;
     private JMenu menu;
-    private JMenuItem[] _file;
+    private JMenuItem[] menuItems;  //items in the menu bar
     // Buttons
     public JButton button_RC;
     public JButton button_Finalize;
@@ -395,23 +395,30 @@ public class MainFrame extends JFrame {
     // @todo implement correctly after rough GUI design
     public void makeMenuBar() {
         menuBar = new JMenuBar();
-        menu = new JMenu("File");
+        menu = new JMenu("General");    //TODO(DU) update the name
 
-        _file = new JMenuItem[3];
-        _file[0] = new JMenuItem("New"); // @To do: not sure what this should open
-        _file[1] = new JMenuItem("Save"); // saves progress
-        _file[2] = new JMenuItem("Save as"); // Options : PDF, Word document
+        menuItems = new JMenuItem[3];
+        menuItems[0] = new JMenuItem("Sign Up"); // allow users to create a new account
+        menuItems[1] = new JMenuItem("Save"); // saves progress
+        menuItems[2] = new JMenuItem("Save as"); // Options : PDF, Word document
 
 
-        for(int i=0; i<_file.length; i++) {
-            menu.add(_file[i]);
+        for(int i=0; i<menuItems.length; i++) {
+            menu.add(menuItems[i]);
         }
         menuBar.add(menu);
         frame.setJMenuBar(menuBar);
 
-        // Save as
+        //user sign up
+        menuItems[0].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
 
-        _file[2].addActionListener(new ActionListener() {
+            }
+        });
+
+        // Save as
+        menuItems[2].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JFileChooser fc = new JFileChooser();

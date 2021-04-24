@@ -1,6 +1,4 @@
 package com.company;
-import javax.swing.*;
-import java.awt.*;
 
 /**
  * @todo: description
@@ -15,8 +13,8 @@ public class Main {
      */
     public static void main(String[] args) {
 
-        MainFrame frame = new MainFrame();
-        frame.makeFrame(800, 1000);
-
+//        MainFrame frame = new MainFrame();
+//        frame.makeFrame(800, 800);
+        new WelcomePage("Comment Generator");
     }
 }

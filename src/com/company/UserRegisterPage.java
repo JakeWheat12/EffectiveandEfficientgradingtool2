@@ -7,10 +7,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.sql.Statement;
 
-
+/**
+ * @author Carter Du
+ * Store users' accounts' information into the database
+ */
 public class UserRegisterPage extends JFrame {
     private JTextField firstName;
     private JTextField lastName;
@@ -20,7 +22,7 @@ public class UserRegisterPage extends JFrame {
     private JButton regBtn;
     private JPanel container;
 
-    public UserRegisterPage(String title){
+    public UserRegisterPage(){
         container = new JPanel();
 
         JLabel lblNewUserRegister = new JLabel("Sign-Up Page!");    //font
@@ -93,7 +95,7 @@ public class UserRegisterPage extends JFrame {
                 String lN = lastName.getText();
                 String mail = email.getText();
                 String userN = userName.getText();
-                String passwd = passwordField.getText();
+                String passwd = passwordField.getText();    //TODO: getText() is depriciated
 
                 Connection connection;
                 String welcomeMessage = "" + fN;
@@ -104,15 +106,17 @@ public class UserRegisterPage extends JFrame {
                             passwd + "','" + userN + "')";
 
                     Statement sta = connection.createStatement();
-                    int x = sta.executeUpdate(query);
-                    if (x == 0) {
-                        JOptionPane.showMessageDialog(regBtn, "This is alredy exist");
-                    } else {
+                    int returnCode = sta.executeUpdate(query);
+                    if (returnCode == 0) {
+                        JOptionPane.showMessageDialog(regBtn, "This is already exist");
+                    }
+                     else {
                         JOptionPane.showMessageDialog(regBtn,
-                                "Welcome, " + welcomeMessage + "Your account is sucessfully created");
+                                "Welcome, " + welcomeMessage + "Your account is successfully created");
                     }
                     connection.close();
-                } catch (Exception exception) {
+                }
+                catch (Exception exception) {
                     exception.printStackTrace();
                 }
             }
@@ -131,7 +135,4 @@ public class UserRegisterPage extends JFrame {
 
     }
 
-    public static void main(String[] args) {
-        new UserRegisterPage("User Register");
-    }
 }
