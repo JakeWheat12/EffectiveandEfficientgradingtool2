@@ -5,10 +5,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class UserLoginPage extends JFrame {
 
@@ -25,6 +22,7 @@ public class UserLoginPage extends JFrame {
         userNameLabel = new JLabel("UserName: ");
         userNameLabel.setFont(new Font("Times New Roman", Font.PLAIN, 20));
         userNameLabel.setBounds(58, 100, 99, 30);
+        userNameLabel.setForeground(Color.CYAN);
         panel.add(userNameLabel);
         userName = new JTextField();
         userName.setFont(new Font("Tahoma", Font.PLAIN, 20));
@@ -37,6 +35,7 @@ public class UserLoginPage extends JFrame {
         passwordLabel = new JLabel("Password: ");
         passwordLabel.setFont(new Font("Times New Roman", Font.PLAIN, 20));
         passwordLabel.setBounds(58, 200, 110, 30);
+        passwordLabel.setForeground(Color.CYAN);
         panel.add(passwordLabel);
         password = new JPasswordField();
         password.setFont(new Font("Tahoma", Font.PLAIN, 20));
@@ -62,15 +61,16 @@ public class UserLoginPage extends JFrame {
                 //SELECT * FROM User.Users WHERE UserName="carter565" && Passwd="dlx123";
                 try {
                     connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/User", "root", "dlx990330");
-                    String query = "SELECT * FROM User.Users WHERE UserName= + usernameField" + "&& Passwd=" + passwordField + ";";
+                    String query = "SELECT * FROM User.Users WHERE UserName=" + "\"" + usernameField +"\"" + "&& Passwd=" + "\"" + passwordField + "\"" + ";";
                     Statement statement = connection.createStatement();
-                    int returnCode = statement.executeUpdate(query);
-                    if(returnCode == 0){    //means that the query return nothing
+                    ResultSet resultSet = statement.executeQuery(query);
+                    System.out.println(resultSet);
+                    if(!resultSet.next()){    //means that the query return nothing
                         JOptionPane.showMessageDialog(loginBtn, "Username or Password is not correct! Make sure you enter the right account information!");
                     }
                     else{   //login the system successful
                         MainFrame mainFrame = new MainFrame();
-                        mainFrame.setSize(800, 800);
+                        mainFrame.makeFrame(800, 800);
                     }
 
                 }
@@ -81,15 +81,12 @@ public class UserLoginPage extends JFrame {
         });
 
         panel.setBorder(new EmptyBorder(5, 5, 5, 5));
+        panel.setBackground(Color.BLACK);
         add(panel);
         setBounds(450, 190, 1014, 600);
         setLayout(new GridBagLayout());
         setResizable(false);
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    }
-
-    public static void main(String[] args) {
-        new UserLoginPage();
     }
 }
