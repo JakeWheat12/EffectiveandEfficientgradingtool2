@@ -24,9 +24,9 @@ public class MainFrame extends JFrame {
     // JFrame
     JFrame frame;
     // Constants
-    protected final String TITLE = "Comment Generator"; // title of the app //TODO(DU) update the name
-    protected final String[] EXTENSION = new String[]{"pdf", "docx"}; // menubar constant
-    protected final String[] DESCRIPTION = new String[]{"PDF (*.pdf)", "Word Document (*.docx)"}; // menubar constant   //TODO (DU): get ride of WORD?
+    protected final String TITLE = "Grading Tool"; // title of the app //TODO(DU) update the name
+    protected final String EXTENSION = "pdf"; // menubar constant
+    protected final String DESCRIPTION = "PDF (*.pdf)"; // menubar constant   //TODO (DU): get ride of WORD?
     // JLists
     public JList list_refreshed;
     public JList list_selected;
@@ -111,9 +111,7 @@ public class MainFrame extends JFrame {
                 panel_right_sub1.setLayout(new BoxLayout(panel_right_sub1, BoxLayout.X_AXIS));
                 panel_right_sub2.setLayout(new BoxLayout(panel_right_sub2, BoxLayout.X_AXIS));
                 panel_right_sub3.setLayout(new BoxLayout(panel_right_sub3, BoxLayout.X_AXIS));
-                panel_right_sub1.setBackground(Color.yellow);
-                panel_right_sub2.setBackground(Color.GREEN);
-                panel_right_sub3.setBackground(Color.CYAN);
+
 
                 panel_right.setLayout(new BoxLayout(panel_right, BoxLayout.Y_AXIS));
 
@@ -159,7 +157,7 @@ public class MainFrame extends JFrame {
      */
     public void makeCommentField(PriorityQueue<Comment> pq) {
 
-        DefaultListModel<String> mode = new DefaultListModel<>();
+       // DefaultListModel<String> mode = new DefaultListModel<>();
 
         ArrayList<String> test = new ArrayList<>();
 
@@ -175,6 +173,8 @@ public class MainFrame extends JFrame {
         list_refreshed.setLayoutOrientation(JList.VERTICAL);
         list_refreshed.setVisibleRowCount(45);
         scroll_refreshed = new JScrollPane(list_refreshed);
+        scroll_refreshed.setVisible(true);
+        scroll_refreshed.setPreferredSize(new Dimension(400, 900));
         list_refreshed.addMouseListener(new MouseListener() {
 
             //Mouse Listener Interface
@@ -202,6 +202,7 @@ public class MainFrame extends JFrame {
 
             }
         });
+
         panel_left.add(scroll_refreshed);
     }
 
@@ -346,7 +347,7 @@ public class MainFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JFileChooser fc = new JFileChooser();
-                FileFilter filter1 = new FileNameExtensionFilter(DESCRIPTION[0], EXTENSION[0]);
+                FileFilter filter1 = new FileNameExtensionFilter(DESCRIPTION, EXTENSION);
                 fc.setAcceptAllFileFilterUsed(false);
                 fc.setFileFilter(filter1);
 
@@ -395,7 +396,7 @@ public class MainFrame extends JFrame {
     // @todo implement correctly after rough GUI design
     public void makeMenuBar() {
         menuBar = new JMenuBar();
-        menu = new JMenu("General");    //TODO(DU) update the name
+        menu = new JMenu("File");    //TODO(DU) update the name
 
         menuItems = new JMenuItem[3];
         menuItems[0] = new JMenuItem("Sign Up"); // allow users to create a new account
@@ -422,11 +423,9 @@ public class MainFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JFileChooser fc = new JFileChooser();
-                FileFilter filter1 = new FileNameExtensionFilter(DESCRIPTION[0], EXTENSION[0]);
-                FileFilter filter2 = new FileNameExtensionFilter(DESCRIPTION[1], EXTENSION[1]);
+                FileFilter filter1 = new FileNameExtensionFilter(DESCRIPTION, EXTENSION);
                 fc.setAcceptAllFileFilterUsed(false);
                 fc.setFileFilter(filter1);
-                fc.setFileFilter(filter2);
 
                 int option = fc.showSaveDialog(frame);
                 if (option == JFileChooser.APPROVE_OPTION) {

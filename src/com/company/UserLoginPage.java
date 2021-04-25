@@ -70,7 +70,7 @@ public class UserLoginPage extends JFrame {
                     }
                     else{   //login the system successful
                         MainFrame mainFrame = new MainFrame();
-                        mainFrame.makeFrame(800, 800);
+                        mainFrame.makeFrame(1000, 800);
                     }
 
                 }
