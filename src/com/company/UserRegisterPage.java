@@ -155,7 +155,7 @@ public class UserRegisterPage extends JFrame {
 
         setBounds(450, 190, 1014, 800);
         setResizable(false);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setVisible(true);
 
     }

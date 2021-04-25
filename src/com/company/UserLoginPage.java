@@ -87,6 +87,6 @@ public class UserLoginPage extends JFrame {
         setLayout(new GridBagLayout());
         setResizable(false);
         setVisible(true);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 }
