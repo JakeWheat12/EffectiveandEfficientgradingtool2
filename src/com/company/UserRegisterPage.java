@@ -1,5 +1,7 @@
 package com.company;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -13,6 +15,7 @@ import java.sql.Statement;
 /**
  * @author Carter Du
  * Store users' accounts' information into the database
+ * reference: https://github.com/patrickfav/bcrypt (for hashing the password)
  */
 public class UserRegisterPage extends JFrame {
     private JTextField firstName;
@@ -39,7 +42,7 @@ public class UserRegisterPage extends JFrame {
         lblName.setBounds(58, 152, 99, 43);
         container.add(lblName);
         firstName = new JTextField();
-        firstName.setFont(new Font("Tahoma", Font.PLAIN, 20));
+        firstName.setFont(new Font("Tahoma", Font.PLAIN, 32));
         firstName.setBounds(214, 151, 228, 50);
         container.add(firstName);
         firstName.setColumns(10);
@@ -103,6 +106,7 @@ public class UserRegisterPage extends JFrame {
                 String mail = email.getText();
                 String userN = userName.getText();
                 String passwd = passwordField.getText();    //TODO: getText() is depriciated
+                String hash = BCrypt.hashpw(passwd, BCrypt.gensalt(12));    //hash of the plain-text password
 
                 Connection connection;
                 String welcomeMessage = "" + fN;
@@ -115,8 +119,10 @@ public class UserRegisterPage extends JFrame {
                                 "Make sure you follow the rules below!");
                     }
                     else{
-                        String query = "INSERT INTO Users VALUES('" + fN + "','" + lN + "','" + mail + "','" +
-                                passwd + "','" + userN + "')";
+//                        String query = "INSERT INTO Users VALUES('" + fN + "','" + lN + "','" + mail + "','" +
+//                                passwd + "','" + userN + "')";
+                        String query = "INSERT INTO ACCOUNTS VALUES('" + userN + "','" + hash + "','" + fN + "','" +
+                                    lN + "','" + mail + "')";
 
                         Statement sta = connection.createStatement();
                         int returnCode = sta.executeUpdate(query);
@@ -137,12 +143,15 @@ public class UserRegisterPage extends JFrame {
         });
 
         container.add(regBtn);
-        JLabel rule1 = new JLabel("1. UserName's length should be greater than 3");
-        JLabel rule2 = new JLabel("2. Password's length should be greater than 5");
-        JLabel rule3 = new JLabel("3. Email's format should be standard");
+        JLabel rule1 = new JLabel("-- UserName's length should be greater than 3");
+        JLabel rule2 = new JLabel("-- Password's length should be greater than 5");
+        JLabel rule3 = new JLabel("-- Email's format should be standard");
         rule1.setBounds(380, 650, 800, 30);
+        rule1.setForeground(Color.WHITE);
         rule2.setBounds(380, 670,800,30);
+        rule2.setForeground(Color.WHITE);
         rule3.setBounds(380,690,800,30);
+        rule3.setForeground(Color.WHITE);
         container.add(rule1);
         container.add(rule2);
         container.add(rule3);
@@ -159,5 +168,4 @@ public class UserRegisterPage extends JFrame {
         setVisible(true);
 
     }
-
 }
