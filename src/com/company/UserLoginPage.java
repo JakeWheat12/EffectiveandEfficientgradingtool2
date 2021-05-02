@@ -1,7 +1,5 @@
 package com.company;
 
-import org.mindrot.jbcrypt.BCrypt;
-
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -17,7 +15,7 @@ public class UserLoginPage extends JFrame {
     private JPasswordField password;
     private JButton loginBtn;   //login
 
-    public UserLoginPage() {
+    public UserLoginPage(){
         setTitle("Login Page");
         JPanel panel = new JPanel();
 
@@ -58,23 +56,25 @@ public class UserLoginPage extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 String usernameField = userName.getText();
                 String passwordField = password.getText();
-
                 Connection connection;
-
+                //String welcomeMessage = "" + fN;
+                //SELECT * FROM User.Users WHERE UserName="carter565" && Passwd="dlx123";
                 try {
                     connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/User", "root", "dlx990330");
-                    String query = "SELECT UserPassword FROM User.ACCOUNTS WHERE UserName=" + "\"" + usernameField + "\"" + ";";
+                    String query = "SELECT * FROM User.Users WHERE UserName=" + "\"" + usernameField +"\"" + "&& Passwd=" + "\"" + passwordField + "\"" + ";";
                     Statement statement = connection.createStatement();
                     ResultSet resultSet = statement.executeQuery(query);
-
-                    boolean validUsername = resultSet.next();   //check for query
-                    if(validUsername && BCrypt.checkpw(passwordField, resultSet.getString("UserPassword"))){
-                        MainFrame mainFrame = new MainFrame();
-                            mainFrame.makeFrame(1000, 800);
-                    }
-                    else
+                    System.out.println(resultSet);
+                    if(!resultSet.next()){    //means that the query return nothing
                         JOptionPane.showMessageDialog(loginBtn, "Username or Password is not correct! Make sure you enter the right account information!");
-                } catch (Exception exception) {
+                    }
+                    else{   //login the system successful
+                        MainFrame mainFrame = new MainFrame();
+                        mainFrame.makeFrame(1000, 800);
+                    }
+
+                }
+                catch (Exception exception) {
                     exception.printStackTrace();
                 }
             }
@@ -83,12 +83,10 @@ public class UserLoginPage extends JFrame {
         panel.setBorder(new EmptyBorder(5, 5, 5, 5));
         panel.setBackground(Color.BLACK);
         add(panel);
-        setBounds(450, 190, 800, 300);
+        setBounds(450, 190, 1014, 600);
         setLayout(new GridBagLayout());
         setResizable(false);
         setVisible(true);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
-
-
 }

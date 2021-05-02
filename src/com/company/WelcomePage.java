@@ -43,14 +43,12 @@ public class WelcomePage extends JFrame {
 
         panel.add(loginBtn);
         panel.add(signUpBtn);
-        panel.setBackground(Color.BLACK);
 
         label = new JLabel("COMMENT GENERATOR");
         label.setBounds(300, 300, 500, 50);
         JTextField textField = new JTextField("Comment Generator");
-        textField.setSize(50, 50);
-        label.setFont(new Font("Serif Bold Italic", Font.PLAIN, 20));
-        label.setForeground(Color.CYAN);
+        textField.setForeground(Color.CYAN);
+        label.setFont(new Font("Tahoma", Font.PLAIN, 30));
         label.setText(textField.getText());
         add(label);
 

@@ -3,6 +3,7 @@ package com.company;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
 import java.io.IOException;
@@ -17,17 +18,38 @@ import java.util.ArrayList;
 
 public class CreatePDF {
 
-    // constants
-    private static final int MAX_LINES = 42;
-    private static final int MAX_LENGTH = 52;
+    /**
+     * constants for margin, width, and length
+     */
+    private static final int MAX_LINES = 33;
+    private static final int MAX_LENGTH = 65;
     private static final int FONT_SIZE = 16;
     private static final int OFFSET_W = 50;
     private static final int OFFSET_H = 700;
-    private static final int SPACING = -25;
+    /**
+     * @SPACING spacing between different comments
+     *
+     * @SPACING_TL spacing between TOO LONG comments
+     */
+    private static final int SPACING = -23;
+    private static final int SPACING_TL = -20;
+    /**
+     * @TITLE title
+     */
+    private static final String TITLE = "Rubric / Comments";
 
+
+    /**
+     * Creates a pdf file filled with comments from @src/com/company/MainFrame.java
+     *
+     * @param path directory to be saved
+     * @param list list of comments the User chose
+     * @throws IOException
+     */
     public static void createPDF_saveAs(String path, ArrayList<String> list) throws IOException{
 
-        int num_lines = 0; // number of lines
+        int num_lines = 4; // number of lines. starts at 3 because of @TITLE
+        PDFont font = PDType1Font.HELVETICA; // font
 
         // creates PDF
         PDDocument document = new PDDocument();
@@ -39,8 +61,14 @@ public class CreatePDF {
         // writes to PDF
         PDPageContentStream contentStream = new PDPageContentStream(document, page);
         contentStream.beginText();
-        contentStream.setFont(PDType1Font.COURIER, FONT_SIZE);
-        contentStream.newLineAtOffset(OFFSET_W, OFFSET_H);
+
+        // title
+        contentStream.setFont(font, FONT_SIZE*2);
+        contentStream.newLineAtOffset(OFFSET_W+120, OFFSET_H+40);
+        contentStream.showText(TITLE);
+        // content
+        contentStream.setFont(font, FONT_SIZE);
+        contentStream.newLineAtOffset(-100, SPACING);
 
         for (String str : list) {
             if (num_lines > MAX_LINES)  { // create a new page if current page is filled
@@ -52,7 +80,7 @@ public class CreatePDF {
                 // writes to PDF
                 contentStream = new PDPageContentStream(document, page);
                 contentStream.beginText();
-                contentStream.setFont(PDType1Font.COURIER, FONT_SIZE);
+                contentStream.setFont(font, FONT_SIZE);
                 contentStream.newLineAtOffset(OFFSET_W, OFFSET_H);
                 num_lines = 0; // reinitlaize to 0
             }
@@ -67,12 +95,12 @@ public class CreatePDF {
                     // writes to PDF
                     contentStream = new PDPageContentStream(document, page);
                     contentStream.beginText();
-                    contentStream.setFont(PDType1Font.COURIER, FONT_SIZE);
+                    contentStream.setFont(font, FONT_SIZE);
                     contentStream.newLineAtOffset(OFFSET_W, OFFSET_H);
                     num_lines = 0; // reinitlaize to 0
                 }
                 contentStream.showText(str.substring(0, MAX_LENGTH));
-                contentStream.newLineAtOffset(0, SPACING);
+                contentStream.newLineAtOffset(0, SPACING_TL);
                 num_lines++;
                 str = str.substring(MAX_LENGTH);
             }

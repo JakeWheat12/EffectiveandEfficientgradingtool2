@@ -5,13 +5,17 @@ import java.util.ArrayList;
 
 /**
  * A class cosisiting of helper methods
- *
- * @Author Hyungsuk Kim
  */
 
 public class Helper {
 
-    // converts DefaultListModel to ArrayList<String>
+    /**
+     * @Author Hyungsuk Kim
+     * converts DefaultListModel to ArrayList<String>
+     *
+     * @param model DefaultListModel from SelectedCommentField JList
+     * @return ArrayList of Strings
+     */
     public static ArrayList<String> toArrayList(DefaultListModel model) {
         ArrayList<String> result = new ArrayList<>();
 
