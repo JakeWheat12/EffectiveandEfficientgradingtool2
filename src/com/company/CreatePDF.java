@@ -48,7 +48,7 @@ public class CreatePDF {
      */
     public static void createPDF_saveAs(String path, ArrayList<String> list) throws IOException{
 
-        int num_lines = 4; // number of lines. starts at 3 because of @TITLE
+        int num_lines = 5; // number of lines. starts at 3 because of @TITLE
         PDFont font = PDType1Font.HELVETICA; // font
 
         // creates PDF
@@ -68,7 +68,7 @@ public class CreatePDF {
         contentStream.showText(TITLE);
         // content
         contentStream.setFont(font, FONT_SIZE);
-        contentStream.newLineAtOffset(-100, SPACING);
+        contentStream.newLineAtOffset(-120, SPACING*2);
 
         for (String str : list) {
             if (num_lines > MAX_LINES)  { // create a new page if current page is filled

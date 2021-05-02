@@ -1,4 +1,5 @@
 package com.company;
+import javax.print.attribute.standard.JobMediaSheetsCompleted;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -48,6 +49,8 @@ public class MainFrame extends JFrame {
     public JLabel label_selectedField;
     // TextField
     public TextField tField;
+    // TextArea
+    public JTextArea tArea;
     // JPanels
     public JPanel panel_left, panel_right, panel_bottom;
     public JPanel panel_right_sub1, panel_right_sub2, panel_right_sub3;
@@ -108,23 +111,23 @@ public class MainFrame extends JFrame {
                 panel_left.setLayout(new BoxLayout(panel_left, BoxLayout.Y_AXIS));
                 panel_left.setBackground(Color.DARK_GRAY);
 
-//                panel_left.setBackground(new Color(82, 55, 173));
-
                 // right panel
                 panel_right = new JPanel();
                 panel_right.setBackground(Color.DARK_GRAY);
-//                panel_right.setBackground(new Color(0, 0, 0));
 
                 // right sub panels
                 panel_right_sub1 = new JPanel();
                 panel_right_sub2 = new JPanel();
                 panel_right_sub3 = new JPanel();
-                panel_right_sub1.setLayout(new BoxLayout(panel_right_sub1, BoxLayout.LINE_AXIS));
-                panel_right_sub2.setLayout(new BoxLayout(panel_right_sub2, BoxLayout.LINE_AXIS));
-                panel_right_sub3.setLayout(new BoxLayout(panel_right_sub3, BoxLayout.LINE_AXIS));
+
+                panel_right_sub1.setLayout(new BoxLayout(panel_right_sub1, BoxLayout.X_AXIS));
+                panel_right_sub2.setLayout(new BoxLayout(panel_right_sub2, BoxLayout.X_AXIS));
+                panel_right_sub3.setLayout(new BoxLayout(panel_right_sub3, BoxLayout.Y_AXIS));
+
+                //@todo sub1,2 color
                 panel_right_sub1.setBackground(Color.yellow);
                 panel_right_sub2.setBackground(Color.GREEN);
-                panel_right_sub3.setBackground(Color.CYAN);
+                panel_right_sub3.setBackground(Color.DARK_GRAY);
 
                 panel_right.setLayout(new BoxLayout(panel_right, BoxLayout.Y_AXIS));
 
@@ -143,9 +146,13 @@ public class MainFrame extends JFrame {
                 makeCommentField(pq);
 
                 // Right
+                // sub1
                 makeUserCommentField();
+                // sub2
                 makeButtonUC_Clear();
                 makeAdd_Button();
+                //sub3
+//                makeSelectedCommentLabel();
                 makeSelectedComment();
 
                 // add sub panels
@@ -153,9 +160,17 @@ public class MainFrame extends JFrame {
                 panel_right.add(panel_right_sub2);
                 panel_right.add(panel_right_sub3);
 
+                // failed code
+                // filler panel (center)
+//                JPanel panel_filler = new JPanel();
+//                JButton button_filler = new JButton();
+//                button_filler.setVisible(true);
+//                panel_filler.add(button_filler);
+//                panel_filler.setPreferredSize(panel_filler.getPreferredSize());
+//                panel_left.add(panel_filler, BorderLayout.WEST);
                 // add panels
                 frame.add(panel_left, BorderLayout.CENTER);
-                frame.add(panel_right, BorderLayout.EAST);
+                frame.add(panel_right, BorderLayout.LINE_END);
                 frame.add(panel_bottom, BorderLayout.SOUTH);
 
                 frame.setVisible(true);
@@ -186,7 +201,7 @@ public class MainFrame extends JFrame {
 
         list_refreshed.setBackground(Color.gray);
         list_refreshed.setForeground(Color.white);
-        list_refreshed.setFont(new Font("courrier new", Font.PLAIN, 14));
+        list_refreshed.setFont(new Font("", Font.PLAIN, 14));
         list_refreshed.setLayoutOrientation(JList.VERTICAL);
         list_refreshed.setVisibleRowCount(45);
         scroll_refreshed = new JScrollPane(list_refreshed);
@@ -203,6 +218,9 @@ public class MainFrame extends JFrame {
                     commentList.remove(0);
                 }
                 commentList.addElement(new Comment(test.get(list_refreshed.getSelectedIndex())));
+                // keeps focus on bottom
+                int size = list_selected.getModel().getSize();
+                list_selected.ensureIndexIsVisible( size - 1 );
             }
             @Override
             public void mouseReleased(MouseEvent e) {
@@ -239,25 +257,38 @@ public class MainFrame extends JFrame {
      */
     public void makeUserCommentField() {
 
-        tField = new TextField("Test", 5);
-        tField.setText("Enter Custom Comment...");
+//        tField = new TextField("Test", 5);
+//        tField.setText("Enter Custom Comment...");
+//        tField.setFont(new Font("", Font.PLAIN, 14));
+//        tField.setBackground(Color.gray);
+//        tField.setForeground(Color.white);
 
-        panel_right_sub1.add(tField);
+        // @test
+        tArea = new JTextArea("Enter a comment...", 20, 40);
+        tArea.setPreferredSize(new Dimension(300,300));
+        JScrollPane js = new JScrollPane(tArea, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+
+        tArea.setLineWrap(true);
+        tArea.setWrapStyleWord(true);
+
+//        panel_right_sub1.add(tField);
+        panel_right_sub1.add(js);
         panel_right_sub1.setBackground(Color.CYAN);
         panel_right_sub1.setPreferredSize(new Dimension(100, 100));
         panel_right_sub1.setMaximumSize(new Dimension(300, 300));
 
-        tField.addKeyListener(new KeyAdapter() {
+        tArea.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
                 if(e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    commentList.addElement(new Comment(tField.getText()));
-                    tField.setText("");
+                    commentList.addElement(new Comment(tArea.getText()));
+                    tArea.setText("");
                 }
+                // keeps focus on bottom
+                int size = list_selected.getModel().getSize();
+                list_selected.ensureIndexIsVisible( size - 1 );
             }
         });
-
-        JTextField tt = new JTextField();
     }
 
     // 2
@@ -276,8 +307,8 @@ public class MainFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                if (tField.getText().length() == 0) { // if empty string aka error, skip
-                    tField.requestFocusInWindow();
+                if (tArea.getText().length() == 0) { // if empty string aka error, skip
+                    tArea.requestFocusInWindow();
                     return;
                 }
                 // reset the textfield
@@ -285,9 +316,12 @@ public class MainFrame extends JFrame {
                     first = false;
                     commentList.remove(0);
                 }
-                commentList.addElement(new Comment(tField.getText()));
-                tField.setText("");
-                tField.requestFocusInWindow();
+                commentList.addElement(new Comment(tArea.getText()));
+                tArea.setText("");
+                tArea.requestFocusInWindow();
+                // keeps focus on bottom
+                int size = list_selected.getModel().getSize();
+                list_selected.ensureIndexIsVisible( size - 1 );
             }
         });
     }
@@ -298,8 +332,8 @@ public class MainFrame extends JFrame {
         button_Clear.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                tField.setText(""); // reset the textfield
-                tField.requestFocusInWindow();
+                tArea.setText(""); // reset the textArea
+                tArea.requestFocusInWindow();
             }
         });
     }
@@ -314,10 +348,14 @@ public class MainFrame extends JFrame {
         commentList = new DefaultListModel<>();
 
         // cheesed
-        commentList.addElement(new Comment("                                                                                                                    "));
+//        commentList.addElement(new Comment("                                                                                                                    "));
+        commentList.addElement(new Comment("                                                                       "));
         list_selected = new JList((commentList));
         // @todo size
 //        list_selected.setPreferredSize(new Dimension(300, 750));
+        list_selected.setBackground(Color.gray);
+        list_selected.setForeground(Color.white);
+        list_selected.setFont(new Font("", Font.PLAIN, 14));
         list_selected.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         list_selected.setLayoutOrientation(JList.VERTICAL);
         list_selected.setVisibleRowCount(-1);
@@ -328,10 +366,10 @@ public class MainFrame extends JFrame {
     }
 
     public void makeSelectedCommentLabel() {
-        label_commentField = new JLabel("Choose your comments");
-        label_commentField.setFont(new Font("Berlin Sans FB Demi", Font.PLAIN, 20));
-        label_commentField.setForeground(Color.WHITE);
-        panel_left.add(label_commentField);
+        label_selectedField = new JLabel("Selected Comments");
+        label_selectedField.setFont(new Font("Berlin Sans FB Demi", Font.PLAIN, 20));
+        label_selectedField.setForeground(Color.WHITE);
+        panel_right_sub3.add(label_selectedField);
     }
 
 
@@ -407,6 +445,9 @@ public class MainFrame extends JFrame {
                 for (int i=indices.length-1; i>=0; i--) { // deletes the selected comments
                     commentList.remove(indices[i]);
                 }
+                // @todo demo ************************************************
+                int size = list_selected.getModel().getSize();
+                list_selected.ensureIndexIsVisible( size - 1 );
             }
         });
     }
