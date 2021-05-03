@@ -1,17 +1,11 @@
 package com.company;
-import javax.print.attribute.standard.JobMediaSheetsCompleted;
+
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.PriorityQueue;
 import java.io.File;
 import java.io.IOException;
 
@@ -25,9 +19,9 @@ public class MainFrame extends JFrame {
     // JFrame
     JFrame frame;
     // Constants
-    protected final String TITLE = "Comment Generator"; // title of the app //TODO(DU) update the name
+    protected final String TITLE = "Comment Generator"; // title of the app
     protected final String EXTENSION = "pdf"; // menubar constant
-    protected final String DESCRIPTION = "PDF (*.pdf)"; // menubar constant   //TODO (DU): get ride of WORD?
+    protected final String DESCRIPTION = "PDF (*.pdf)"; // menubar constant
     // JLists
     public JList list_refreshed;
     public JList list_selected;
@@ -68,7 +62,6 @@ public class MainFrame extends JFrame {
 
     /**
      * Constructor
-     *
      * @param title
      */
     public MainFrame(String title) {
@@ -78,14 +71,11 @@ public class MainFrame extends JFrame {
     }
 
     /**
-     * Creates the first window to be displayed.
-     *
-     * @param w
-     * @param h
+     * Creates the first window to be displayed
+     * @param w width
+     * @param h height
      */
     public void makeFrame(int w,  int h) {
-        // create priority queue
-        PriorityQueue<Comment> pq = Comment.query("", 1000);
 
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
@@ -143,7 +133,7 @@ public class MainFrame extends JFrame {
 
                 // Left
                 makeCommentFieldLabel();
-                makeCommentField(pq);
+                makeCommentField(Comment.query());
 
                 // Right
                 // sub1
@@ -182,19 +172,14 @@ public class MainFrame extends JFrame {
 
     /**
      * Creates Comment Field for users to choose comments from
-     *
-     * @param pq
-     *
-     * @todo do something with parameter
+     * @param list an arraylist of Comment
      */
-    public void makeCommentField(PriorityQueue<Comment> pq) {
+    public void makeCommentField(ArrayList<Comment> list) {
 
-        DefaultListModel<String> mode = new DefaultListModel<>();
-
-        ArrayList<String> test = new ArrayList<>();
+        ArrayList<Comment> test = new ArrayList<>();
 
         for (int i=0; i<50; i++) {
-            test.add("test " + i);
+            test.add(new Comment("test " + i));
         }
         list_refreshed = new JList(test.toArray());
         list_refreshed.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
@@ -217,7 +202,7 @@ public class MainFrame extends JFrame {
                     first = false;
                     commentList.remove(0);
                 }
-                commentList.addElement(new Comment(test.get(list_refreshed.getSelectedIndex())));
+                commentList.addElement(test.get(list_refreshed.getSelectedIndex()));
                 // keeps focus on bottom
                 int size = list_selected.getModel().getSize();
                 list_selected.ensureIndexIsVisible( size - 1 );
@@ -294,7 +279,6 @@ public class MainFrame extends JFrame {
     // 2
     /**
      * Creates Add button for user made comments
-     *
      */
     // @todo make it appear below makeUserCommentField
     public void makeAdd_Button() {
@@ -513,7 +497,9 @@ public class MainFrame extends JFrame {
 
     // public void make_
 
-
+    /**
+     * for testing GUI
+     */
     public static void main(String args[]) {
         MainFrame frame = new MainFrame();
         frame.makeFrame(800, 800);

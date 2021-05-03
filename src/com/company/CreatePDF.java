@@ -12,7 +12,6 @@ import java.util.ArrayList;
 
 /**
  * A class for creating PDF file using pdfbox library
- *
  * @Author Hyungsuk Kim
  */
 
@@ -28,7 +27,6 @@ public class CreatePDF {
     private static final int OFFSET_H = 700;
     /**
      * @SPACING spacing between different comments
-     *
      * @SPACING_TL spacing between TOO LONG comments
      */
     private static final int SPACING = -23;
@@ -41,7 +39,6 @@ public class CreatePDF {
 
     /**
      * Creates a pdf file filled with comments from @src/com/company/MainFrame.java
-     *
      * @param path directory to be saved
      * @param list list of comments the User chose
      * @throws IOException

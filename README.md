@@ -4,8 +4,8 @@ Capstone Project 2021 Suny Albany
 --------
 
 # Objective
-- Allowing users (graders) to generate some existed comments from the local database
-- Storing comments into the file and being able to exported as the PDF(or WORD.doc) format locally
+- Allowing users (graders) to generate existing comments from a local database
+- Users are able to choose comments from the database, create their own comments, and export the selected comments as a PDF file
 
 -----------------
 
@@ -35,6 +35,6 @@ Capstone Project 2021 Suny Albany
 
        Email nvarchar(100) NOT NULL
 
-    );  
+	);  
 
 ----------------

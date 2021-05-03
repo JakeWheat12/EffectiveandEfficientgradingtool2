@@ -1,80 +1,34 @@
 package com.company;
 
-import java.util.PriorityQueue;
+import java.util.ArrayList;
 
 /**
- * to write: description
- *
- * @author Timothy Grashaw
+ * Comment is an object that will store comments as String
+ * @author Hyungsuk Kim
  */
-public class Comment implements Comparable<Comment>{
+public class Comment {
     private String text;
-    private String category;
-    private int positivity;
 
     public Comment() {
-        // temporary initialization
         text = "";
-        category =  "";
-        positivity = -1;
     }
 
     public Comment(String txt) {
         text = txt;
-        category = "";
-        positivity = -1;
-
-    }
-
-    public Comment(String txt, String ctgry, int pstvty) {
-        this.text = txt;
-        this.category = ctgry;
-        this.positivity = pstvty;
     }
 
     public String getText() {
         return text;
     }
 
-    public String getCategory() {
-        return category;
-    }
-
-    public int getIsPostive() {
-        return positivity;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public void setIsPostive(int isPostive) {
-        this.positivity = isPostive;
-    }
-
     /**
-     * A method to querry the database for comments that match the criteria
-     * @param subject the subject of comments that are desired
-     * @param positivity the positivity rating of the desired comments
-     * @return the resulting list of comments gathered from the querry
+     * A method to query the database for comments that match the criteria
+     * @return the resulting list of comments gathered from the database
      */
-    // this method is static for testing purpose
-    public static PriorityQueue<Comment> query(String subject, int positivity){
-        PriorityQueue<Comment> list = new PriorityQueue<Comment>();
-        //@todo remove these example comments and add connectivity with the database to get actual comments
-        list.add(new Comment("Test0", "Computer Science", 0));
-        list.add(new Comment("Test1", "Computer Science", 1));
-        list.add(new Comment("Test2", "Computer Science", 2));
-        return list;
-    }
-
-    //@todo implement this
-    public int compareTo(Comment cmnt) {
-        return this.getText().compareTo(cmnt.getText());
+    //@todo implement JDBC connection
+    public static ArrayList<Comment> query(){
+        ArrayList<Comment> result = new ArrayList<>();
+        return result;
     }
 
     /**
@@ -84,23 +38,4 @@ public class Comment implements Comparable<Comment>{
     public void insert(Comment com){
         //@todo implement method
     }
-
-    /**
-     * A method to update the popularity of a given comment in the database
-     * @param increase the amount of times the given comment has been used during the grading session
-     */
-    public void updatePopularity(int increase){
-        //@todo implement method
-    }
-
-    /** A method to return content of Comment
-     *
-     * @return
-     */
-    @Override
-    public String toString() {
-        return this.text;
-    }
-
-
 }
