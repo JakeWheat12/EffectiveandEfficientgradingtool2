@@ -28,6 +28,10 @@ public class Comment {
     //@todo implement JDBC connection
     public static ArrayList<Comment> query(){
         ArrayList<Comment> result = new ArrayList<>();
+
+        for (int i=0; i<50; i++) {
+            result.add(new Comment("test " + i));
+        }
         return result;
     }
 
@@ -37,5 +41,9 @@ public class Comment {
      */
     public void insert(Comment com){
         //@todo implement method
+    }
+
+    public String toString() {
+        return this.text;
     }
 }

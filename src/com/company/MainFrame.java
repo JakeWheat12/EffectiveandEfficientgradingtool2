@@ -176,12 +176,9 @@ public class MainFrame extends JFrame {
      */
     public void makeCommentField(ArrayList<Comment> list) {
 
-        ArrayList<Comment> test = new ArrayList<>();
+        ArrayList<String> list_string = Helper.ConvertComment(list);
 
-        for (int i=0; i<50; i++) {
-            test.add(new Comment("test " + i));
-        }
-        list_refreshed = new JList(test.toArray());
+        list_refreshed = new JList(list_string.toArray());
         list_refreshed.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
         list_refreshed.setBackground(Color.gray);
@@ -202,7 +199,7 @@ public class MainFrame extends JFrame {
                     first = false;
                     commentList.remove(0);
                 }
-                commentList.addElement(test.get(list_refreshed.getSelectedIndex()));
+                commentList.addElement(list.get(list_refreshed.getSelectedIndex()));
                 // keeps focus on bottom
                 int size = list_selected.getModel().getSize();
                 list_selected.ensureIndexIsVisible( size - 1 );
