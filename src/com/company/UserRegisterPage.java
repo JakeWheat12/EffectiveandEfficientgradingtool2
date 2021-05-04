@@ -111,7 +111,7 @@ public class UserRegisterPage extends JFrame {
                 String welcomeMessage = "" + fN;
                 welcomeMessage += " \n";
                 try {
-                    connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/User", "root", "dlx990330");
+                    connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/user", "root", "1k2k3k4k");
                     if(fN.isEmpty() || lN.isEmpty() || mail.isEmpty() || mail.length()<=5 ||userN.isEmpty() ||
                         userN.length()<3 || passwd.isEmpty() || passwd.length()<=5){
                         JOptionPane.showMessageDialog(regBtn, "User information needs to be accurate. " +
@@ -120,7 +120,7 @@ public class UserRegisterPage extends JFrame {
                     else{
 //                        String query = "INSERT INTO Users VALUES('" + fN + "','" + lN + "','" + mail + "','" +
 //                                passwd + "','" + userN + "')";
-                        String query = "INSERT INTO ACCOUNTS VALUES('" + userN + "','" + hash + "','" + fN + "','" +
+                        String query = "INSERT INTO user VALUES('" + userN + "','" + hash + "','" + fN + "','" +
                                 lN + "','" + mail + "')";
 
                         Statement sta = connection.createStatement();

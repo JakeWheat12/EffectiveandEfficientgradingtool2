@@ -61,8 +61,8 @@ public class UserLoginPage extends JFrame {
                 //String welcomeMessage = "" + fN;
                 //SELECT * FROM User.Users WHERE UserName="carter565" && Passwd="dlx123";
                 try {
-                    connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/User", "root", "dlx990330");
-                    String query = "SELECT UserPassword FROM User.ACCOUNTS WHERE UserName=" + "\"" + usernameField + "\"" + ";";
+                    connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/user", "root", "1k2k3k4k");
+                    String query = "SELECT UserPassword FROM user.user WHERE UserName=" + "\"" + usernameField + "\"" + ";";
                     Statement statement = connection.createStatement();
                     ResultSet resultSet = statement.executeQuery(query);
                     System.out.println(resultSet);
