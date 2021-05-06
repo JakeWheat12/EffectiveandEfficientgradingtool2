@@ -38,4 +38,14 @@ Capstone Project 2021 Suny Albany
 
 	);  
 
+	USE Test;
+
+      CREATE TABLE Comment(
+
+       Comment_ID int NOT NULL PRIMARY KEY,
+
+       Comment_text nvarchar(200) NOT NULL
+
+    	);
+
 ----------------
