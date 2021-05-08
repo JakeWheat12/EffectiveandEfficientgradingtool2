@@ -2,7 +2,10 @@ package com.company;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+//testing ...
 public class ForgetPasswordPage extends JFrame {
     private JLabel email;
     private JLabel verifyCode;
@@ -38,6 +41,12 @@ public class ForgetPasswordPage extends JFrame {
         //verify button
         verifyButton = new JButton("VERIFY");
         panel.add(verifyButton);
+        verifyButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
 
 
         add(panel);
