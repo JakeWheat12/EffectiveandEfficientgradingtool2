@@ -61,8 +61,10 @@ public class UserLoginPage extends JFrame {
                 //String welcomeMessage = "" + fN;
                 //SELECT * FROM User.Users WHERE UserName="carter565" && Passwd="dlx123";
                 try {
-                    connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/User", "root", "dlx990330");
-                    String query = "SELECT UserPassword FROM User.ACCOUNTS WHERE UserName=" + "\"" + usernameField + "\"" + ";";
+                    //connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/User", "root", "dlx990330");
+                    connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Test", "root", "dlx990330");
+                    //String query = "SELECT UserPassword FROM User.ACCOUNTS WHERE UserName=" + "\"" + usernameField + "\"" + ";";
+                    String query = "SELECT UserPassword FROM Test.User WHERE UserName=" + "\"" + usernameField + "\"" + ";";
                     Statement statement = connection.createStatement();
                     ResultSet resultSet = statement.executeQuery(query);
                     System.out.println(resultSet);
@@ -70,7 +72,7 @@ public class UserLoginPage extends JFrame {
                     boolean validUsername = resultSet.next();   //check for query
                     if(validUsername && BCrypt.checkpw(passwordField, resultSet.getString("UserPassword"))){
                         MainFrame mainFrame = new MainFrame();
-                        mainFrame.makeFrame(1000, 800);
+                        mainFrame.makeFrame(800, 800);
                     }
                     else
                     JOptionPane.showMessageDialog(loginBtn, "Username or Password is not correct! Make sure you enter the right account information!");

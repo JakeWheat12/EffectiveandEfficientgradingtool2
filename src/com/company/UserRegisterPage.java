@@ -1,6 +1,7 @@
 package com.company;
 
 import org.mindrot.jbcrypt.BCrypt;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -14,7 +15,7 @@ import java.sql.Statement;
 /**
  * @author Carter Du
  * Store users' accounts' information into the database
- *  * reference: https://github.com/patrickfav/bcrypt (for hashing the password)
+ * reference: https://github.com/patrickfav/bcrypt (for hashing the password)
  */
 public class UserRegisterPage extends JFrame {
     private JTextField firstName;
@@ -111,20 +112,22 @@ public class UserRegisterPage extends JFrame {
                 String welcomeMessage = "" + fN;
                 welcomeMessage += " \n";
                 try {
-                    connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/User", "root", "dlx990330");
+//                    connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/User", "root", "dlx990330");
+                    connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Test", "root", "dlx990330");
                     if(fN.isEmpty() || lN.isEmpty() || mail.isEmpty() || mail.length()<=5 ||userN.isEmpty() ||
                         userN.length()<3 || passwd.isEmpty() || passwd.length()<=5){
                         JOptionPane.showMessageDialog(regBtn, "User information needs to be accurate. " +
                                 "Make sure you follow the rules below!");
                     }
                     else{
-//                        String query = "INSERT INTO Users VALUES('" + fN + "','" + lN + "','" + mail + "','" +
-//                                passwd + "','" + userN + "')";
-                        String query = "INSERT INTO ACCOUNTS VALUES('" + userN + "','" + hash + "','" + fN + "','" +
+//                        String query = "INSERT INTO ACCOUNTS VALUES('" + userN + "','" + hash + "','" + fN + "','" +
+//                                    lN + "','" + mail + "')";
+                        String query = "INSERT INTO User VALUES('" + userN + "','" + hash + "','" + fN + "','" +
                                 lN + "','" + mail + "')";
 
                         Statement sta = connection.createStatement();
                         int returnCode = sta.executeUpdate(query);
+                        System.out.println("return code: " + returnCode);
                         if (returnCode == 0)
                             JOptionPane.showMessageDialog(regBtn, "This is already exist");
 
@@ -132,7 +135,6 @@ public class UserRegisterPage extends JFrame {
                             JOptionPane.showMessageDialog(regBtn,
                                     "Welcome, " + welcomeMessage + "Your account is successfully created");
                         connection.close();
-                        //dispatchEvent(new WindowEvent(UserLoginPage.f, WindowEvent.WINDOW_CLOSING));
                     }
                 }
                 catch (Exception exception) {
@@ -167,5 +169,4 @@ public class UserRegisterPage extends JFrame {
         setVisible(true);
 
     }
-
 }

@@ -116,7 +116,7 @@ public class MainFrame extends JFrame {
 
                 //@todo sub1,2 color
                 panel_right_sub1.setBackground(Color.yellow);
-                panel_right_sub2.setBackground(Color.GREEN);
+                panel_right_sub2.setBackground(Color.DARK_GRAY);
                 panel_right_sub3.setBackground(Color.DARK_GRAY);
 
                 panel_right.setLayout(new BoxLayout(panel_right, BoxLayout.Y_AXIS));
@@ -494,12 +494,12 @@ public class MainFrame extends JFrame {
 
     // public void make_
 
-    /**
-     * for testing GUI
-     */
-    public static void main(String args[]) {
-        MainFrame frame = new MainFrame();
-        frame.makeFrame(800, 800);
-    }
+//    /**
+//     * for testing GUI
+//     */
+//    public static void main(String args[]) {
+//        MainFrame frame = new MainFrame();
+//        frame.makeFrame(800, 800);
+//    }
 
 }
