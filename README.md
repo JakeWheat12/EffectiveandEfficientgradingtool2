@@ -17,7 +17,8 @@ Capstone Project 2021 Suny Albany
 
 # SQL Script to generate tables for Users' Accounts 
 
-- Assuming "Test" is our database name we created
+- Assuming "Test" is our database name we created. 
+- The password is the local password of the user's computer.
 - Remember, selecting the Charset as "utf8mb4" and Collation as "utf8mb4_unicode_520_ci"
 - (normal utf8 or default is fine but will not allow you to use the emoji)
 
@@ -36,5 +37,15 @@ Capstone Project 2021 Suny Albany
        Email nvarchar(100) NOT NULL
 
 	);  
+
+	USE Test;
+
+      CREATE TABLE Comment(
+
+       Comment_ID int NOT NULL PRIMARY KEY,
+
+       Comment_text nvarchar(200) NOT NULL
+
+    	);
 
 ----------------

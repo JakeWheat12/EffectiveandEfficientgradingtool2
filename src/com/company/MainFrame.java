@@ -259,12 +259,17 @@ public class MainFrame extends JFrame {
         panel_right_sub1.setPreferredSize(new Dimension(100, 100));
         panel_right_sub1.setMaximumSize(new Dimension(300, 300));
 
+        // @todo figure out what to do with "enter" bug.
+        // 1. delete enter functionality (easier fix at the expense of user friendliness)
+        // 2. find alternative (harder)
         tArea.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
                 if(e.getKeyCode() == KeyEvent.VK_ENTER) {
                     commentList.addElement(new Comment(tArea.getText()));
-                    tArea.setText("");
+                    tArea.setText(null);
+
+                    System.out.println("content: *" + tArea.getText() + "*");
                 }
                 // keeps focus on bottom
                 int size = list_selected.getModel().getSize();
