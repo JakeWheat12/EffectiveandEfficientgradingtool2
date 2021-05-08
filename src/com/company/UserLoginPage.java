@@ -6,6 +6,8 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.*;
 
 public class UserLoginPage extends JFrame {
@@ -15,6 +17,7 @@ public class UserLoginPage extends JFrame {
     private JTextField userName;
     private JPasswordField password;
     private JButton loginBtn;   //login
+    private JLabel forgetPassword;
 
     public UserLoginPage() {
         setTitle("Login Page");
@@ -80,6 +83,19 @@ public class UserLoginPage extends JFrame {
             }
         });
 
+        forgetPassword = new JLabel("forget password");
+        forgetPassword.setForeground(Color.YELLOW);
+        panel.add(forgetPassword);
+        /**
+         * allow user jump to forgetPassword page
+         */
+        forgetPassword.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                new ForgetPasswordPage();
+            }
+        });
+
         panel.setBorder(new EmptyBorder(5, 5, 5, 5));
         panel.setBackground(Color.BLACK);
         add(panel);
@@ -88,5 +104,9 @@ public class UserLoginPage extends JFrame {
         setResizable(false);
         setVisible(true);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    }
+
+    public static void main(String[] args) {
+        new UserLoginPage();
     }
 }
