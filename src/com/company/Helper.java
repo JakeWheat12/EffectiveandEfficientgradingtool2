@@ -50,4 +50,20 @@ public class Helper {
             dList.addElement(cmnt);
         }
     }
+
+    /**
+     * @Author Hyungsuk Kim
+     *
+     * removes "\n" {new lines} from
+     *
+     * @param list an ArayList to be modified
+     * @return a new ArrayList that contains Strings without "\n"
+     */
+    public static ArrayList<String> RemoveNewLine(ArrayList<String> list) {
+        ArrayList<String> result = new ArrayList<>();
+        for (String str : list) {
+            result.add(str.replace("\n",""));
+        }
+        return result;
+    }
 }

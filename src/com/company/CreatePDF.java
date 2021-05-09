@@ -67,6 +67,8 @@ public class CreatePDF {
         contentStream.setFont(font, FONT_SIZE);
         contentStream.newLineAtOffset(-120, SPACING*2);
 
+        list = Helper.RemoveNewLine(list);
+
         for (String str : list) {
             if (num_lines > MAX_LINES)  { // create a new page if current page is filled
                 contentStream.endText();
