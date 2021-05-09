@@ -389,7 +389,8 @@ public class MainFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 // test code
                 //@todo do something with DefaultListModel {@code CommentFieldList}
-                list_array = Comment.query();
+                list_array = Comment.query(category, positivity);
+                //list_array = Comment.query();
                 Helper.AddToDefaultList(list_array, commentFieldList);
 
             }
