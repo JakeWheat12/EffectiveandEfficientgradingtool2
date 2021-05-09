@@ -13,8 +13,8 @@ public class WelcomePage extends JFrame {
     private JButton signUpBtn;
     private JButton loginBtn;
     private JLabel label;
-    private static int WIDTH = 800;
-    private static int HEIGHT = 800;
+    private static int WIDTH = 600;
+    private static int HEIGHT = 600;
 
     public WelcomePage(String title){
         setTitle(title);
@@ -46,13 +46,15 @@ public class WelcomePage extends JFrame {
         panel.setBackground(Color.BLACK);
 
         label = new JLabel("COMMENT GENERATOR");
-        label.setBounds(300, 300, 500, 50);
+        //label.setBounds(300, 300, 500, 50);
+        label.setBounds(220,220,200,100);
         JTextField textField = new JTextField("Comment Generator");
-        textField.setSize(50, 50);
         label.setFont(new Font("Serif Bold Italic", Font.PLAIN, 20));
+
         label.setForeground(Color.CYAN);
         label.setText(textField.getText());
         add(label);
+
 
         add(panel);
         setVisible(true);
