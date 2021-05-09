@@ -28,11 +28,13 @@ public class Comment {
     //@todo implement JDBC connection
     public static ArrayList<Comment> query(){
         ArrayList<Comment> result = new ArrayList<>();
-
         for (int i=0; i<50; i++) {
-            result.add(new Comment("test " + i));
+            result.add(new Comment("test " + (int)(Math.random()*100 +1)));
         }
         return result;
+
+        //@todo will only have this code when {@code Databse.Refresh_database} is implemented
+        // return Database.Refresh_database();
     }
 
     /**

@@ -2,6 +2,7 @@ package com.company;
 
 import javax.swing.*;
 import java.sql.*;
+import java.util.ArrayList;
 
 public class Database {
 
@@ -12,7 +13,7 @@ public class Database {
     private static final String USER = "user";
     private static final String PASSWORD = "1k2k3k4k";
 
-    public static void Refresh_database (DefaultListModel<Comment> list) {
+    public static ArrayList<Comment> Refresh_database (DefaultListModel<Comment> list) {
         String comment;
 
         Connection connection;
@@ -29,5 +30,7 @@ public class Database {
         e.printStackTrace();
         }
 
+        // temp code
+        return new ArrayList<>();
     }
 }

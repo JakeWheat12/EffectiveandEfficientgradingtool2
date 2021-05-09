@@ -24,18 +24,30 @@ public class Helper {
         return result;
     }
 
-    /**
-     * @Author Hyungsuk Kim
-     * converts Comments to String
-     * @param list ArrayList of Comments
-     * @return ArrayList of String
-     */
-    public static ArrayList<String> ConvertComment(ArrayList<Comment> list) {
-        ArrayList<String> result = new ArrayList<>();
+//    /**
+//     * @Author Hyungsuk Kim
+//     * converts Comments to String
+//     * @param list ArrayList of Comments
+//     * @return ArrayList of String
+//     */
+//    public static ArrayList<String> ConvertComment(ArrayList<Comment> list) {
+//        ArrayList<String> result = new ArrayList<>();
+//
+//        for (Comment cmnt : list) {
+//            result.add(cmnt.getText());
+//        }
+//        return result;
+//    }
 
+    /**
+     *
+     * @param list
+     * @return
+     */
+    public static void AddToDefaultList(ArrayList<Comment> list, DefaultListModel<Comment> dList) {
+        dList.clear();
         for (Comment cmnt : list) {
-            result.add(cmnt.getText());
+            dList.addElement(cmnt);
         }
-        return result;
     }
 }

@@ -49,7 +49,10 @@ public class MainFrame extends JFrame {
     public JPanel panel_left, panel_right, panel_bottom;
     public JPanel panel_right_sub1, panel_right_sub2, panel_right_sub3;
     // DefaultListModels
+    DefaultListModel<Comment> commentFieldList;
     DefaultListModel<Comment> commentList;
+    // ArrayList
+    ArrayList<Comment> list_array;
     // booleans
     private boolean first = true;
 
@@ -67,6 +70,7 @@ public class MainFrame extends JFrame {
     public MainFrame(String title) {
         super(title);
         setLayout(new BorderLayout());
+        makeFrame(800,800);
 
     }
 
@@ -133,7 +137,7 @@ public class MainFrame extends JFrame {
 
                 // Left
                 makeCommentFieldLabel();
-                makeCommentField(Comment.query());
+                makeCommentField();
 
                 // Right
                 // sub1
@@ -172,13 +176,18 @@ public class MainFrame extends JFrame {
 
     /**
      * Creates Comment Field for users to choose comments from
-     * @param list an arraylist of Comment
      */
-    public void makeCommentField(ArrayList<Comment> list) {
+    public void makeCommentField() {
 
-        ArrayList<String> list_string = Helper.ConvertComment(list);
+        commentFieldList = new DefaultListModel<>();
+        list_array = Comment.query();
+        Helper.AddToDefaultList(list_array, commentFieldList);
 
-        list_refreshed = new JList(list_string.toArray());
+        // use these methods to modify defaultlist
+//        commentFieldList.addElement();
+//        commentFieldList.remove();
+
+        list_refreshed = new JList(commentFieldList);
         list_refreshed.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
         list_refreshed.setBackground(Color.gray);
@@ -199,7 +208,7 @@ public class MainFrame extends JFrame {
                     first = false;
                     commentList.remove(0);
                 }
-                commentList.addElement(list.get(list_refreshed.getSelectedIndex()));
+                commentList.addElement(list_array.get(list_refreshed.getSelectedIndex()));
                 // keeps focus on bottom
                 int size = list_selected.getModel().getSize();
                 list_selected.ensureIndexIsVisible( size - 1 );
@@ -336,7 +345,7 @@ public class MainFrame extends JFrame {
         // cheesed
 //        commentList.addElement(new Comment("                                                                                                                    "));
         commentList.addElement(new Comment("                                                                       "));
-        list_selected = new JList((commentList));
+        list_selected = new JList(commentList);
         // @todo size
 //        list_selected.setPreferredSize(new Dimension(300, 750));
         list_selected.setBackground(Color.gray);
@@ -374,12 +383,13 @@ public class MainFrame extends JFrame {
         button_RC.addActionListener(new ActionListener() {
 
             //@todo connect to database
-
             //Button clicked
             @Override
             public void actionPerformed(ActionEvent e) {
                 // test code
-//              @todo make JList refresh on button push
+                //@todo do something with DefaultListModel {@code CommentFieldList}
+                list_array = Comment.query();
+                Helper.AddToDefaultList(list_array, commentFieldList);
 
             }
         });
