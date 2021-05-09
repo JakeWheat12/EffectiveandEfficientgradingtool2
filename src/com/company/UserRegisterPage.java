@@ -25,9 +25,11 @@ public class UserRegisterPage extends JFrame {
     private JPasswordField passwordField;
     private JButton regBtn;
     private JPanel container;
+    private JFrame frame;
 
     public UserRegisterPage(){
         container = new JPanel();
+        frame = new JFrame();
 
         JLabel lblNewUserRegister = new JLabel("Sign-Up Page!");    //font
         lblNewUserRegister.setFont(new Font("Times New Roman", Font.PLAIN, 42));
@@ -134,6 +136,7 @@ public class UserRegisterPage extends JFrame {
                         else
                             JOptionPane.showMessageDialog(regBtn,
                                     "Welcome, " + welcomeMessage + "Your account is successfully created");
+                        frame.dispose(); //close the register page after user registered
                         connection.close();
                     }
                 }
@@ -160,13 +163,13 @@ public class UserRegisterPage extends JFrame {
         container.setBorder(new EmptyBorder(5, 5, 5, 5));
         container.setLayout(null);
         container.setBackground(Color.BLACK);
-        setContentPane(container);
+        frame.setContentPane(container);
 
 
-        setBounds(450, 190, 1014, 800);
-        setResizable(false);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setVisible(true);
+        frame.setBounds(450, 190, 1014, 800);
+        frame.setResizable(false);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setVisible(true);
 
     }
 }

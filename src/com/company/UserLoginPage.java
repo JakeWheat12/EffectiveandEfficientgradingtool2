@@ -18,10 +18,12 @@ public class UserLoginPage extends JFrame {
     private JPasswordField password;
     private JButton loginBtn;   //login
     private JLabel forgetPassword;
+    private JFrame frame;
 
     public UserLoginPage() {
         setTitle("Login Page");
         JPanel panel = new JPanel();
+        frame = new JFrame();
 
         userNameLabel = new JLabel("UserName: ");
         userNameLabel.setFont(new Font("Times New Roman", Font.PLAIN, 20));
@@ -64,14 +66,15 @@ public class UserLoginPage extends JFrame {
                 //String welcomeMessage = "" + fN;
                 //SELECT * FROM User.Users WHERE UserName="carter565" && Passwd="dlx123";
                 try {
-                    connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/user", "root", "1k2k3k4k");
-                    String query = "SELECT UserPassword FROM user.user WHERE UserName=" + "\"" + usernameField + "\"" + ";";
+                    connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Test", "root", "dlx990330");
+                    String query = "SELECT UserPassword FROM Test.User WHERE UserName=" + "\"" + usernameField + "\"" + ";";
                     Statement statement = connection.createStatement();
                     ResultSet resultSet = statement.executeQuery(query);
                     System.out.println(resultSet);
 
                     boolean validUsername = resultSet.next();   //check for query
                     if(validUsername && BCrypt.checkpw(passwordField, resultSet.getString("UserPassword"))){
+                        frame.dispose();    //close the current login window
                         MainFrame mainFrame = new MainFrame();
                         mainFrame.makeFrame(1000, 800);
                     }
@@ -98,12 +101,12 @@ public class UserLoginPage extends JFrame {
 
         panel.setBorder(new EmptyBorder(5, 5, 5, 5));
         panel.setBackground(Color.BLACK);
-        add(panel);
-        setBounds(450, 190, 800, 300);
-        setLayout(new GridBagLayout());
-        setResizable(false);
-        setVisible(true);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.add(panel);
+        frame.setBounds(450, 190, 800, 300);
+        frame.setLayout(new GridBagLayout());
+        frame.setResizable(false);
+        frame.setVisible(true);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
     public static void main(String[] args) {

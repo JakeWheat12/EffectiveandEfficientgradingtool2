@@ -496,15 +496,9 @@ public class MainFrame extends JFrame {
     }
 
 
+    public static void main(String[] args) {
+        new MainFrame("asasa");
+    }
 
-    // public void make_
-
-//    /**
-//     * for testing GUI
-//     */
-//    public static void main(String args[]) {
-//        MainFrame frame = new MainFrame();
-//        frame.makeFrame(800, 800);
-//    }
 
 }
