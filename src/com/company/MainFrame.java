@@ -389,6 +389,11 @@ public class MainFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 // test code
                 //@todo do something with DefaultListModel {@code CommentFieldList}
+                //prevent sql injections
+                if(category.contains(";") || category.contains(")")) {
+                    category = "";
+                    System.out.println("Error: Possible SQL Injection Detected. No special characters.");
+                }
                 list_array = Comment.query(category, positivity);
                 //list_array = Comment.query();
                 Helper.AddToDefaultList(list_array, commentFieldList);
@@ -531,7 +536,7 @@ public class MainFrame extends JFrame {
                 JLabel categoryLabel = new JLabel("New Category");
                 JTextField categoryText = new JTextField();
                 JLabel positivityLabel = new JLabel("Positive?" + "");
-                JRadioButton JRBOne = new JRadioButton("Negative"), JRBTwo = new JRadioButton("Not Positive"), JRBThree = new JRadioButton("Positive"), JRBFour = new JRadioButton("Very Positive"), JRBMixed = new JRadioButton("Mixed");
+                JRadioButton JRBOne = new JRadioButton("Very Negative"), JRBTwo = new JRadioButton("Negative"), JRBThree = new JRadioButton("Positive"), JRBFour = new JRadioButton("Very Positive"), JRBMixed = new JRadioButton("Mixed");
                 JRBMixed.setSelected(true);
                 ButtonGroup group1 = new ButtonGroup();
                 group1.add(JRBOne);
@@ -544,7 +549,7 @@ public class MainFrame extends JFrame {
                 enter.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        category = categoryText.getText();
+                            category = categoryText.getText();
                         if(JRBFour.isSelected())
                             positivity = "4";
                         if(JRBThree.isSelected())
@@ -555,7 +560,7 @@ public class MainFrame extends JFrame {
                             positivity = "1";
                         if(JRBMixed.isSelected())
                             positivity = "";
-                        System.out.println(positivity + " " + category); //testing
+                        //System.out.println(positivity + " " + category); //testing
                         frame.dispose();
                     }
                 });

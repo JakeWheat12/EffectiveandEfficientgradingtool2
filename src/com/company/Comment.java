@@ -12,11 +12,10 @@ public class Comment {
     private int positivity;
 
     public Comment() {
-        text = "";
+        this.text = "";
     }
-
-    public Comment(String txt) {
-        text = txt;
+    public Comment(String text) {
+        this.text = text;
     }
 
     public String getText() {
@@ -39,15 +38,7 @@ public class Comment {
      */
     //@todo implement JDBC connection
     public static ArrayList<Comment> query(){
-        ArrayList<Comment> result = new ArrayList<>();
-        for (int i=0; i<50; i++) {
-            result.add(new Comment("test " + (int)(Math.random()*100 +1)));
-        }
-        return result;
-
-        //@todo will only have this code when {@code Databse.Refresh_database} is implemented
-        // return Database.Refresh_database();
-
+        return Database.Refresh_database();
     }
     public static ArrayList<Comment> query(String category, String positivity){
        /* ArrayList<Comment> result = new ArrayList<>();

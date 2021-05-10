@@ -8,10 +8,22 @@ public class Database {
 
 //    static final String JDBC_DRIVER = "";
 
-    // @todo change these to your database settings. I will change my database when I can
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/test";
-    private static final String USER = "user";
-    private static final String PASSWORD = "1k2k3k4k";
+    //@todo find a way to make this jdbc stuff not user specifc?
+    /*CARTER D*/
+    //private static final String DB_URL = "jdbc:mysql://localhost:3306/test";
+    //private static final String USER = "user";
+    //private static final String PASSWORD = "1k2k3k4k";
+
+    /*TIM G*/
+    //private static final String DB_URL = "jdbc:mysql://localhost:3306/e&e_gradingtool";
+    //private static final String USER = "TimG";
+
+    /*GENERIC*/
+    private static final String DB_URL = "";
+    private static final String USER = "";
+    private static final String PASSWORD = "";
+
+
 
     public static ArrayList<Comment> Refresh_database () {
         Connection connection = null;
@@ -24,7 +36,7 @@ public class Database {
             rs = s.executeQuery("SELECT commentText FROM comment ORDER BY RAND() LIMIT 25;");
 
             while (rs.next()) {
-                list.add(rs.getString("commentText"));
+                list.add(new Comment(rs.getString("commentText")));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -44,8 +56,7 @@ public class Database {
                 e.printStackTrace();
             }
 
-            // temp code
-            return new ArrayList<>();
+            return list;
         }
     }
     //The following methods attempt to connect to the database using JDBC and run a query given different criteria
@@ -58,29 +69,26 @@ public class Database {
         try {
             conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
             s = conn.createStatement();
-            rs = s.executeQuery("SELECT TOP 25 commentText, lineNumber FROM comment WHERE schoolSubject = " + category + " ORDER BY popularity;");
+            rs = s.executeQuery("SELECT commentText FROM comment WHERE category like '"+ category +"' ORDER BY popularity LIMIT 25;");
             while(rs.next()) {
-                list.add(rs.getString("commentText"));
+                list.add(new Comment(rs.getString("commentText")));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         finally {
             try {
-                if(conn!=null)
+                if (conn != null)
                     conn.close();
-                if(s!=null)
+                if (s != null)
                     s.close();
-                if(rs!=null)
+                if (rs != null)
                     rs.close();
-            }
-            catch(SQLException e){
+            } catch (SQLException e) {
                 e.printStackTrace();
-                return null;
             }
+            return list;
         }
-
-        return list;
     }
     /** A method to retrieve comments of a certain positivity value and category form the database
      *
@@ -94,31 +102,28 @@ public class Database {
         try {
             conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
             s = conn.createStatement();
-            rs = s.executeQuery("SELECT TOP 25 commentText, lineNumber FROM comment WHERE positivity = " +  positivity + " ORDER BY popularity;");
-
+            rs = s.executeQuery("SELECT commentText FROM comment WHERE positivity = " +  positivity + " ORDER BY popularity LIMIT 50;");
             while(rs.next()) {
-                list.add(rs.getString("commentText"));
+                list.add(new Comment(rs.getString("commentText")));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         finally {
             try {
-                if(conn!=null)
+                if (conn != null)
                     conn.close();
-                if(s!=null)
+                if (s != null)
                     s.close();
-                if(rs!=null)
+                if (rs != null)
                     rs.close();
-            }
-            catch(SQLException e){
+            } catch (SQLException e) {
                 e.printStackTrace();
-                return null;
             }
+            return list;
         }
-
-        return list;
     }
+    //@todo fix this method. Currently returns an empty set.
     public static ArrayList getCommentListByBoth(String category, int positivity){
         Connection conn = null;
         Statement s = null;
@@ -127,10 +132,9 @@ public class Database {
         try {
             conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
             s = conn.createStatement();
-            rs = s.executeQuery("SELECT TOP 25 commentText, lineNumber FROM comment WHERE positivity = " +  positivity + " AND schoolSubject = " + category + " ORDER BY popularity;");
-
+            rs = s.executeQuery("SELECT commentText FROM comment WHERE positivity = " +  positivity + " AND category like '" + category + "' ORDER BY popularity LIMIT 50;");
             while(rs.next()) {
-                list.add(rs.getString("commentText"));
+                list.add(new Comment(rs.getString("commentText")));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -146,11 +150,9 @@ public class Database {
             }
             catch(SQLException e){
                 e.printStackTrace();
-                return null;
             }
+            return list;
         }
-
-        return list;
     }
  /*@todo make a way to upload user comments to the database in the GUI
     public static void submitComment(Comment comment){
