@@ -180,7 +180,8 @@ public class MainFrame extends JFrame {
     public void makeCommentField() {
 
         commentFieldList = new DefaultListModel<>();
-        list_array = Comment.query();
+        //@todo get rid of parameeter after demo
+        list_array = Comment.query(1);
         Helper.AddToDefaultList(list_array, commentFieldList);
 
         // use these methods to modify defaultlist
@@ -388,9 +389,9 @@ public class MainFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 // test code
                 //@todo do something with DefaultListModel {@code CommentFieldList}
-                list_array = Comment.query();
+                // get rid of parameter
+                list_array = Comment.query(4);
                 Helper.AddToDefaultList(list_array, commentFieldList);
-
             }
         });
     }
