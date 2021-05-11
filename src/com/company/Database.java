@@ -32,10 +32,10 @@ public class Database {
         try {
             connection = DriverManager.getConnection(DB_URL, USER, PASSWORD);
             s = connection.createStatement();
-            rs = s.executeQuery("SELECT commentText FROM comment ORDER BY RAND() LIMIT 25;");
+            rs = s.executeQuery("SELECT Comment_text FROM comment ORDER BY RAND() LIMIT 25;");
 
             while (rs.next()) {
-                list.add(new Comment(rs.getString("commentText")));
+                list.add(new Comment(rs.getString("Comment_text")));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -49,6 +49,7 @@ public class Database {
                     rs.close();
             } catch (SQLException se) {
                 //Handle errors for JDBC
+                //JOptionPane.showMessageDialog(null, "SQL Error","Warning", JOptionPane.ERROR_MESSAGE);
                 se.printStackTrace();
             } catch (Exception e) {
                 //Handle errors for Class.forName
@@ -68,9 +69,9 @@ public class Database {
         try {
             conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
             s = conn.createStatement();
-            rs = s.executeQuery("SELECT commentText FROM comment WHERE category like '"+ category +"' ORDER BY popularity LIMIT 25;");
+            rs = s.executeQuery("SELECT Comment_text FROM comment WHERE category like '"+ category +"' ORDER BY popularity LIMIT 25;");
             while(rs.next()) {
-                list.add(new Comment(rs.getString("commentText")));
+                list.add(new Comment(rs.getString("Comment_text")));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -101,9 +102,9 @@ public class Database {
         try {
             conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
             s = conn.createStatement();
-            rs = s.executeQuery("SELECT commentText FROM comment WHERE positivity = " +  positivity + " ORDER BY popularity LIMIT 50;");
+            rs = s.executeQuery("SELECT Comment_text FROM comment WHERE positivity = " +  positivity + " ORDER BY popularity LIMIT 50;");
             while(rs.next()) {
-                list.add(new Comment(rs.getString("commentText")));
+                list.add(new Comment(rs.getString("Comment_text")));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -131,9 +132,9 @@ public class Database {
         try {
             conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
             s = conn.createStatement();
-            rs = s.executeQuery("SELECT commentText FROM comment WHERE positivity = " +  positivity + " AND category like '" + category + "' ORDER BY popularity LIMIT 50;");
+            rs = s.executeQuery("SELECT Comment_text FROM comment WHERE positivity = " +  positivity + " AND category like '" + category + "' ORDER BY popularity LIMIT 50;");
             while(rs.next()) {
-                list.add(new Comment(rs.getString("commentText")));
+                list.add(new Comment(rs.getString("Comment_text")));
             }
         } catch (SQLException e) {
             e.printStackTrace();
