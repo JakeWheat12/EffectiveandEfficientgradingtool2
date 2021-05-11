@@ -55,7 +55,8 @@ public class MainFrame extends JFrame {
     ArrayList<Comment> list_array;
     // booleans
     private boolean first = true;
-
+    //search criteria
+    public String category="", positivity="";
     /**
      * Empty constructor
      */
@@ -388,7 +389,13 @@ public class MainFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 // test code
                 //@todo do something with DefaultListModel {@code CommentFieldList}
-                list_array = Comment.query();
+                //prevent sql injections
+                if(category.contains(";") || category.contains(")")) {
+                    category = "";
+                    System.out.println("Error: Possible SQL Injection Detected. No special characters.");
+                }
+                list_array = Comment.query(category, positivity);
+                //list_array = Comment.query();
                 Helper.AddToDefaultList(list_array, commentFieldList);
 
             }
@@ -457,17 +464,26 @@ public class MainFrame extends JFrame {
     // @todo implement correctly after rough GUI design
     public void makeMenuBar() {
         menuBar = new JMenuBar();
-        menu = new JMenu("General");    //TODO(DU) update the name
-
+        JMenu menu = new JMenu("General");    //TODO(DU) update the name
+        JMenu menuSearch = new JMenu("Search");
+        // Buttons
         menuItems = new JMenuItem[2];
         menuItems[0] = new JMenuItem("Sign Up"); // allow users to create a new account
         menuItems[1] = new JMenuItem("Save as"); // Options : PDF, Word document
+
+        JMenuItem[] _search = new JMenuItem[2];
+        _search[0] = new JMenuItem("Criteria");
+        _search[1] = new JMenuItem("Clear");
 
 
         for(int i=0; i<menuItems.length; i++) {
             menu.add(menuItems[i]);
         }
         menuBar.add(menu);
+        for(int i=0; i<_search.length; i++) {
+            menuSearch.add(_search[i]);
+        }
+        menuBar.add(menuSearch);
         frame.setJMenuBar(menuBar);
 
         //user sign up
@@ -501,6 +517,102 @@ public class MainFrame extends JFrame {
                     }
                     System.out.println("Save as file: " + fileToSave.getAbsolutePath());
                 }
+            }
+        });
+        _search[0].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //Create Search Criteria Pop Up Window
+                JFrame frame = new JFrame("Search Criteria");
+                JPanel panel = new JPanel(), panelbuttons = new JPanel();
+                panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
+                panelbuttons.setLayout(new BoxLayout(panelbuttons, BoxLayout.X_AXIS));
+
+                //Create its components
+                JTextField currentCategory = new JTextField();
+                currentCategory.setEditable(false);
+                currentCategory.setText("Current Category: " + category);
+                currentCategory.setForeground(Color.blue);
+                JLabel categoryLabel = new JLabel("New Category");
+                JTextField categoryText = new JTextField();
+                JLabel positivityLabel = new JLabel("Positive?" + "");
+                JRadioButton JRBOne = new JRadioButton("Very Negative"), JRBTwo = new JRadioButton("Negative"), JRBThree = new JRadioButton("Positive"), JRBFour = new JRadioButton("Very Positive"), JRBMixed = new JRadioButton("Mixed");
+                JRBMixed.setSelected(true);
+                ButtonGroup group1 = new ButtonGroup();
+                group1.add(JRBOne);
+                group1.add(JRBTwo);
+                group1.add(JRBThree);
+                group1.add(JRBFour);
+                group1.add(JRBMixed);
+                JButton enter = new JButton();
+                enter.setText("Enter");
+                enter.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                            category = categoryText.getText();
+                        if(JRBFour.isSelected())
+                            positivity = "4";
+                        if(JRBThree.isSelected())
+                            positivity = "3";
+                        if(JRBTwo.isSelected())
+                            positivity = "2";
+                        if(JRBOne.isSelected())
+                            positivity = "1";
+                        if(JRBMixed.isSelected())
+                            positivity = "";
+                        //System.out.println(positivity + " " + category); //testing
+                        frame.dispose();
+                    }
+                });
+                JButton cancel = new JButton();
+                cancel.setText("Cancel");
+                cancel.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        frame.dispose();
+                    }
+                });
+                //Boxes are used to manage alignment. b1 aligns the category label to the left. b2 maintans the vertical layout
+                //of the radio buttons once they are added to b3. b3 aligns the radiobuttons to the left.
+                Box  b1 = Box.createHorizontalBox(), b2 = Box.createVerticalBox(), b3=Box.createHorizontalBox();
+                b1.add(categoryLabel);
+                b1.add( Box.createHorizontalGlue() );
+
+                b2.add(positivityLabel);
+                b2.add(JRBOne);
+                b2.add(JRBTwo);
+                b2.add(JRBThree);
+                b2.add(JRBFour);
+                b2.add(JRBMixed);
+                b3.add(b2);
+                b3.add(Box.createHorizontalGlue());
+
+                //Add to panel
+                panel.add(currentCategory);
+                panel.add(new JLabel("    ")); //buffer
+                panel.add( b1 );
+                panel.add(categoryText);
+                panel.add(new JLabel("    ")); //buffer
+                panel.add(b3);
+                panelbuttons.add(enter);
+                panelbuttons.add(cancel);
+                panel.add(panelbuttons);
+
+                //Modify Frame
+                frame.add(panel);
+                frame.setSize(200, 300);
+                frame.setResizable(true);
+                frame.setLocationRelativeTo(null);
+                frame.setDefaultCloseOperation(HIDE_ON_CLOSE);
+                frame.setVisible(true);
+                categoryText.requestFocusInWindow(); //brings focus to the only text box to increase efficiency
+            }
+        });
+        _search[1].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                category="";
+                positivity="";
             }
         });
     }
