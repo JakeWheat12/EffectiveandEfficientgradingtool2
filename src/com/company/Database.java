@@ -9,7 +9,7 @@ public class Database {
 //    static final String JDBC_DRIVER = "";
 
     //@todo find a way to make this jdbc stuff not user specifc?
-    /private static final String DB_URL = "jdbc:mysql://localhost:3306/test";
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/test";
     private static final String USER = "user";
     private static final String PASSWORD = "1k2k3k4k";
 
@@ -18,9 +18,9 @@ public class Database {
     //private static final String USER = "TimG";
 
     /*GENERIC*/
-    private static final String DB_URL = "";
-    private static final String USER = "";
-    private static final String PASSWORD = "";
+    //private static final String DB_URL = "";
+    //private static final String USER = "";
+    //private static final String PASSWORD = "";
 
 
 
