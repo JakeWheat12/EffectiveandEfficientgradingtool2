@@ -23,7 +23,10 @@ public class Database {
     //private static final String PASSWORD = "";
 
 
-    public static ArrayList<Comment> Refresh_database() {
+
+
+    public static ArrayList<Comment> Refresh_database () {
+
         Connection connection = null;
         Statement s = null;
         ResultSet rs = null;
@@ -61,7 +64,8 @@ public class Database {
 
     //The following methods attempt to connect to the database using JDBC and run a query given different criteria
     //The username and password fields are the username and password needed to connect to the database using JDBC when not using windows authorization
-    public static ArrayList getCommentListByCategory(String category) {
+    public static ArrayList getCommentListByCategory(String category){
+
         Connection conn = null;
         Statement s = null;
         ResultSet rs = null;
@@ -69,13 +73,17 @@ public class Database {
         try {
             conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
             s = conn.createStatement();
-            rs = s.executeQuery("SELECT Comment_text FROM comment WHERE category like '" + category + "' ORDER BY popularity LIMIT 25;");
-            while (rs.next()) {
+
+            rs = s.executeQuery("SELECT Comment_text FROM comment WHERE category like '"+ category +"' ORDER BY popularity LIMIT 25;");
+            while(rs.next()) {
+
                 list.add(new Comment(rs.getString("Comment_text")));
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
+
+        }
+        finally {
             try {
                 if (conn != null)
                     conn.close();
@@ -89,13 +97,12 @@ public class Database {
             return list;
         }
     }
-
-    /**
-     * A method to retrieve comments of a certain positivity value and category form the database
+    /** A method to retrieve comments of a certain positivity value and category form the database
      *
      * @return ArrayList, a container for the comments that result from the query
      */
-    public static ArrayList getCommentListByPositivity(int positivity) {
+    public static ArrayList getCommentListByPositivity(int positivity){
+
         Connection conn = null;
         Statement s = null;
         ResultSet rs = null;
@@ -103,13 +110,18 @@ public class Database {
         try {
             conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
             s = conn.createStatement();
-            rs = s.executeQuery("SELECT Comment_text FROM comment WHERE positivity = " + positivity + " ORDER BY popularity LIMIT 50;");
-            while (rs.next()) {
+
+            rs = s.executeQuery("SELECT Comment_text FROM comment WHERE positivity = " +  positivity + " ORDER BY popularity LIMIT 50;");
+            while(rs.next()) {
+
                 list.add(new Comment(rs.getString("Comment_text")));
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
+
+        }
+        finally {
+
             try {
                 if (conn != null)
                     conn.close();
@@ -122,10 +134,10 @@ public class Database {
             }
             return list;
         }
-    }
 
+    }
     //@todo fix this method. Currently returns an empty set.
-    public static ArrayList getCommentListByBoth(String category, int positivity) {
+    public static ArrayList getCommentListByBoth(String category, int positivity){
         Connection conn = null;
         Statement s = null;
         ResultSet rs = null;
@@ -133,25 +145,55 @@ public class Database {
         try {
             conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
             s = conn.createStatement();
-            rs = s.executeQuery("SELECT Comment_text FROM comment WHERE positivity = " + positivity + " AND category like '" + category + "' ORDER BY popularity LIMIT 50;");
-            while (rs.next()) {
+            rs = s.executeQuery("SELECT Comment_text FROM comment WHERE positivity = " +  positivity + " AND category like '" + category + "' ORDER BY popularity LIMIT 50;");
+            while(rs.next()) {
                 list.add(new Comment(rs.getString("Comment_text")));
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
+        }
+        finally {
             try {
-                if (conn != null)
+                if(conn!=null)
                     conn.close();
-                if (s != null)
+                if(s!=null)
                     s.close();
-                if (rs != null)
+                if(rs!=null)
                     rs.close();
-            } catch (SQLException e) {
+            }
+            catch(SQLException e){
                 e.printStackTrace();
             }
             return list;
         }
     }
-
+ /*@todo make a way to upload user comments to the database in the GUI
+    public static void submitComment(Comment comment){
+        Connection conn = null;
+        Statement s = null;
+        try {
+            conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
+            s = conn.createStatement();
+            //@todo make sure the sql insert statement is compatible with the database
+            s.executeQuery("INSERT INTO comment" +
+                    "VALUES ('"+comment.getText()+"', '"+comment.getCategory()+"', 0, GETDATE(), '"+ USER +"', "+comment.getPositivity()+", 0)");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                if(conn!=null)
+                    conn.close();
+                if(s!=null)
+                    s.close();
+            }
+            catch(SQLException e){
+                e.printStackTrace();
+            }
+        }
+    }
+  */
 }
+
+
+

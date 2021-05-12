@@ -27,6 +27,20 @@ public class UserRegisterPage extends JFrame {
     private JPanel container;
     private JFrame frame;
 
+    //@todo find a way to make this jdbc stuff not user specifc?
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/test";
+    private static final String USER = "user";
+    private static final String PASSWORD = "1k2k3k4k";
+
+    /*TIM G*/
+    //private static final String DB_URL = "jdbc:mysql://localhost:3306/e&e_gradingtool";
+    //private static final String USER = "TimG";
+
+    /*GENERIC*/
+    //private static final String DB_URL = "";
+    //private static final String USER = "";
+    //private static final String PASSWORD = "";
+
     public UserRegisterPage(){
         container = new JPanel();
         frame = new JFrame();
@@ -114,8 +128,7 @@ public class UserRegisterPage extends JFrame {
                 String welcomeMessage = "" + fN;
                 welcomeMessage += " \n";
                 try {
-//                    connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/User", "root", "dlx990330");
-                    connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Test", "root", "dlx990330");
+                    connection = DriverManager.getConnection(DB_URL, USER, PASSWORD);
                     if(fN.isEmpty() || lN.isEmpty() || mail.isEmpty() || mail.length()<=5 ||userN.isEmpty() ||
                         userN.length()<3 || passwd.isEmpty() || passwd.length()<=5){
                         JOptionPane.showMessageDialog(regBtn, "User information needs to be accurate. " +

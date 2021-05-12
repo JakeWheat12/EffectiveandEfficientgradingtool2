@@ -20,7 +20,22 @@ public class UserLoginPage extends JFrame {
     private JLabel forgetPassword;
     private JFrame frame;
 
+
     public String globalUsername = "";   //record the current user
+
+    //@todo find a way to make this jdbc stuff not user specifc?
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/test";
+    private static final String USER = "user";
+    private static final String PASSWORD = "1k2k3k4k";
+
+    /*TIM G*/
+    //private static final String DB_URL = "jdbc:mysql://localhost:3306/e&e_gradingtool";
+    //private static final String USER = "TimG";
+
+    /*GENERIC*/
+    //private static final String DB_URL = "";
+    //private static final String USER = "";
+    //private static final String PASSWORD = "";
 
     public UserLoginPage() {
         setTitle("Login Page");
@@ -68,8 +83,8 @@ public class UserLoginPage extends JFrame {
                 //String welcomeMessage = "" + fN;
                 //SELECT * FROM User.Users WHERE UserName="carter565" && Passwd="dlx123";
                 try {
-                    connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Test", "root", "dlx990330");
-                    String query = "SELECT UserPassword FROM Test.User WHERE UserName=" + "\"" + usernameField + "\"" + ";";
+                    connection = DriverManager.getConnection(DB_URL,USER,PASSWORD);
+                    String query = "SELECT UserPassword FROM User WHERE UserName=" + "\"" + usernameField + "\"" + ";";
                     Statement statement = connection.createStatement();
                     ResultSet resultSet = statement.executeQuery(query);
 
