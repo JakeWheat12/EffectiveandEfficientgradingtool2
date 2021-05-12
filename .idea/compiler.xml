@@ -6,11 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="TextGenerator" />
+        <module name="499Project" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="TextGenerator" target="1.8" />
+      <module name="499Project" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
