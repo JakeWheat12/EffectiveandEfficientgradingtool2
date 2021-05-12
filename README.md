@@ -1,4 +1,4 @@
-# EffectiveandEfficientGradingTool Documentation 
+# CommentGenerator Documentation 
 Capstone Project 2021 Suny Albany
 
 --------
