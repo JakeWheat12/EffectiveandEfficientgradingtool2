@@ -1,10 +1,12 @@
 package com.company;
 
+
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.*;
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.io.File;
 import java.io.IOException;
@@ -37,6 +39,8 @@ public class MainFrame extends JFrame {
     public JButton button_Finalize;
     public JButton button_Delete;
     public JButton button_Add;
+    private JButton negative;   //generate negative comments
+    private JButton positive;   //generate positive comments
     public JButton filler;
     // Labels
     public JLabel label_commentField;
@@ -95,6 +99,13 @@ public class MainFrame extends JFrame {
                 //makes 3 bottom buttons' panel
                 panel_bottom = new JPanel();
                 panel_bottom.setBackground(Color.DARK_GRAY);
+
+                //adding button of negative and positive
+                negative = new JButton("Negative");
+                positive = new JButton("Positive");
+                panel_bottom.add(negative);
+                panel_bottom.add(positive);
+
 
 
                 // left panel
@@ -390,6 +401,7 @@ public class MainFrame extends JFrame {
                 // test code
                 //@todo do something with DefaultListModel {@code CommentFieldList}
                 // get rid of parameter
+                Connection connection;
                 list_array = Comment.query(4);
                 Helper.AddToDefaultList(list_array, commentFieldList);
             }

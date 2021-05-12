@@ -20,6 +20,8 @@ public class UserLoginPage extends JFrame {
     private JLabel forgetPassword;
     private JFrame frame;
 
+    public String globalUsername = "";   //record the current user
+
     public UserLoginPage() {
         setTitle("Login Page");
         JPanel panel = new JPanel();
@@ -70,11 +72,11 @@ public class UserLoginPage extends JFrame {
                     String query = "SELECT UserPassword FROM Test.User WHERE UserName=" + "\"" + usernameField + "\"" + ";";
                     Statement statement = connection.createStatement();
                     ResultSet resultSet = statement.executeQuery(query);
-                    System.out.println(resultSet);
 
                     boolean validUsername = resultSet.next();   //check for query
                     if(validUsername && BCrypt.checkpw(passwordField, resultSet.getString("UserPassword"))){
                         frame.dispose();    //close the current login window
+                        globalUsername = usernameField; //store the current username globally
                         MainFrame mainFrame = new MainFrame();
                         mainFrame.makeFrame(1000, 800);
                     }
