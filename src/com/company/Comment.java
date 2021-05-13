@@ -36,7 +36,7 @@ public class Comment {
         try {
             connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Test", "root", "dlx990330");
             //assuming good comment 1, bad comment 0
-            String query = "SELECT * FROM Test.Text ORDER BY RAND() LIMIT 10";
+            String query = "SELECT * FROM Test.Text ORDER BY RAND() LIMIT 20";
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
             while(resultSet.next()){
@@ -66,7 +66,7 @@ public class Comment {
         try {
             connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Test", "root", "dlx990330");
             //assuming good comment 1, bad comment 0
-            String query = "SELECT * FROM Test.Text WHERE CATEGORY=0 ORDER BY RAND() LIMIT 10";
+            String query = "SELECT * FROM Test.Text WHERE CATEGORY=0 ORDER BY RAND() LIMIT 15";
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
             while(resultSet.next()){
@@ -96,7 +96,7 @@ public class Comment {
         try {
             connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Test", "root", "dlx990330");
             //assuming good comment 1, bad comment 0
-            String query = "SELECT * FROM Test.Text WHERE CATEGORY=1 ORDER BY RAND() LIMIT 10";
+            String query = "SELECT * FROM Test.Text WHERE CATEGORY=1 ORDER BY RAND() LIMIT 15";
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
             while(resultSet.next()){

@@ -24,9 +24,9 @@ public class UserLoginPage extends JFrame {
     public String globalUsername = "";   //record the current user
 
     //@todo find a way to make this jdbc stuff not user specifc?
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/test";
-    private static final String USER = "user";
-    private static final String PASSWORD = "1k2k3k4k";
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/Test";
+    private static final String USER = "root";
+    private static final String PASSWORD = "dlx990330";
 
     /*TIM G*/
     //private static final String DB_URL = "jdbc:mysql://localhost:3306/e&e_gradingtool";
