@@ -10,7 +10,7 @@ Capstone Project 2021 Suny Albany
 -----------------
 
 # Requirement TOOLS
-- MySQL database
+- MySQL database (mysql connector jar file is needed)
 - JVM(including JDK)
 
 --------------------------
