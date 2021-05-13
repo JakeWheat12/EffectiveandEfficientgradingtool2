@@ -48,7 +48,7 @@ Capstone Project 2021 Suny Albany
 
 	
 -------------------
-. Comment Table (Comment's Category: 1 positive/ 0 negative)
+ Comment Table (Comment's Category: 1 positive/ 0 negative)
 ------------------
 
    	USE Test;
@@ -64,7 +64,7 @@ Capstone Project 2021 Suny Albany
    	);
 
 ----------------
-. Sample data for Comments
+Sample data for Comments
 ----------------
 
 	 INSERT INTO Text(Content, Category)
