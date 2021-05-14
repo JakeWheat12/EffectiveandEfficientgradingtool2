@@ -12,9 +12,6 @@ public class Main {
      * @param args
      */
     public static void main(String[] args) {
-
-//        MainFrame frame = new MainFrame();
-//        frame.makeFrame(800, 800);
         new WelcomePage("Comment Generator");
     }
 }

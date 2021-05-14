@@ -10,6 +10,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.*;
 
+/**
+ * Allow user login in with the registered account
+ * @author Carter Du
+ */
 public class UserLoginPage extends JFrame {
 
     private JLabel userNameLabel;
@@ -23,7 +27,7 @@ public class UserLoginPage extends JFrame {
 
     public String globalUsername = "";   //record the current user
 
-    //@todo find a way to make this jdbc stuff not user specifc?
+    //data should be mannually updated whenever a new user is using!!!
     private static final String DB_URL = "jdbc:mysql://localhost:3306/Test";
     private static final String USER = "root";
     private static final String PASSWORD = "dlx990330";
@@ -126,7 +130,4 @@ public class UserLoginPage extends JFrame {
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
-    public static void main(String[] args) {
-        new UserLoginPage();
-    }
 }

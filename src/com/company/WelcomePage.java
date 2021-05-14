@@ -13,7 +13,7 @@ import java.io.IOException;
 
 /**
  * @author Carter Du
- * The main page
+ * The welcome page allow user to sign up or register
  */
 public class WelcomePage extends JFrame {
     private JButton signUpBtn;
@@ -35,7 +35,7 @@ public class WelcomePage extends JFrame {
 
         JPanel logoPanel = new JPanel();   //panel for adding logo
         logoPanel.setLayout(new FlowLayout());
-        logoPanel.setOpaque(false);
+        logoPanel.setOpaque(false); //get ride of white background
 
         //open the userRegisterPage
         signUpBtn = new JButton("Sign Up");
@@ -59,11 +59,11 @@ public class WelcomePage extends JFrame {
         panel.add(signUpBtn, "cell 0 0, alignx center");
         panel.setBackground(Color.BLACK);
 
+        //product name label
         label = new JLabel("COMMENT GENERATOR");
-        //label.setBounds(300, 300, 500, 50);
         label.setBounds(220,220,200,100);
         JTextField textField = new JTextField("Comment Generator");
-        label.setFont(new Font("Serif Bold Italic", Font.PLAIN, 20));
+        label.setFont(new Font("Serif Bold Italic", Font.BOLD, 20));
 
         label.setForeground(Color.CYAN);
         label.setText(textField.getText());
@@ -87,7 +87,6 @@ public class WelcomePage extends JFrame {
         logoPanel.add(ualbany);
 
         panel.add(logoPanel, "cell 0 2, align center");
-       // panel.add(ualbany);
 
 
         add(panel);

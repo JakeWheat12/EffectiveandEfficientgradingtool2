@@ -11,6 +11,10 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.util.ArrayList;
 
+/**
+ * Main window of comment generator
+ * @author Carter Du, Jake Wheat, Hyungsuk Kim
+ */
 public class MainFrame extends JFrame {
 
     // JFrame
@@ -420,7 +424,7 @@ public class MainFrame extends JFrame {
     }
     //Finalize button
     public void makeButton_Finalize() {
-        button_Finalize = new JButton("Finalize");
+        button_Finalize = new JButton("Finish");
         panel_bottom.add(button_Finalize);
 
         button_Finalize.addActionListener(new ActionListener() {

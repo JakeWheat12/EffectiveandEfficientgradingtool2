@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 /**
  * Comment is an object that will store comments as String
- * @author Hyungsuk Kim
+ * @author Hyungsuk Kim, Carter Du
  */
 public class Comment {
     private String text;

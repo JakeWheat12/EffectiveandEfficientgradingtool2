@@ -2,6 +2,10 @@ package com.company;
 
 import org.mindrot.jbcrypt.BCrypt;
 
+/**
+ * Testing Functionality of BCrypt
+ * @author Carter Du
+ */
 public class TestBCrypt {
 
     public static void main(String[] args) {
