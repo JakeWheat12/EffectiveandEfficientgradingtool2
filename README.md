@@ -15,6 +15,19 @@ Capstone Project 2021 Suny Albany
 
 --------------------------
 
+# Things Users should update before using
+- the database information (since they are all independent)
+- update the header information with your own corresponding MySql database information in UserRegisterPage.class, UserLoginPage.class, Database.class 
+	- EX:	 private static final String DB_URL = "jdbc:mysql://localhost:3306/Test";
+		 private static final String USER = "root";
+		 private static final String PASSWORD = "dlx990330";
+		 
+		3306 is usually the default port number when you create the local database. "Test" is the database name which you can create your own name as well.
+		
+		USER="root": "root" is the default name. 
+		PASSWORD is usually your laptop's password or local computer's password.
+-----------------
+
 # SQL Script to generate tables for Users' Accounts 
 
 - Assuming "Test" is our database name we created. 
@@ -23,7 +36,7 @@ Capstone Project 2021 Suny Albany
 - (normal utf8 or default is fine but will not allow you to use the emoji)
 
 ------------------------
-. User Table (UserName is unique)
+ User Table (UserName is unique)
 -----------------------
 
       USE Test;
@@ -95,4 +108,6 @@ Sample data for Comments
 	  ("Missing major part of assignment", 0);
 	  
 ---------
+# Note
+- The functionality of recoverying user's credential is by google email verificaion. However, currently the funtionality will make users's google accounts insecure. So we are still improving it. Appreciate for the understanding 🙏
 --------
