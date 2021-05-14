@@ -1,32 +1,28 @@
 package com.company;
+
+
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.PriorityQueue;
 import java.io.File;
 import java.io.IOException;
+import java.sql.Connection;
+import java.util.ArrayList;
 
 /**
- * @todo: description
- *
- * @author Jake Wheat, Hyungsuk Kim
+ * Main window of comment generator
+ * @author Carter Du, Jake Wheat, Hyungsuk Kim
  */
 public class MainFrame extends JFrame {
 
     // JFrame
     JFrame frame;
     // Constants
-    protected final String TITLE = "Grading Tool"; // title of the app
-    protected final String[] EXTENSION = new String[]{"pdf", "docx"}; // menubar constant
-    protected final String[] DESCRIPTION = new String[]{"PDF (*.pdf)", "Word Document (*.docx)"}; // menubar constant
+    protected final String TITLE = "Comment Generator"; // title of the app
+    protected final String EXTENSION = "pdf"; // menubar constant
+    protected final String DESCRIPTION = "PDF (*.pdf)"; // menubar constant
     // JLists
     public JList list_refreshed;
     public JList list_selected;
@@ -35,20 +31,33 @@ public class MainFrame extends JFrame {
     // Menu bars
     private JMenuBar menuBar;
     private JMenu menu;
-    private JMenuItem[] _file, _subFile;
+    private JMenuItem[] menuItems;  //items in the menu bar
     // Buttons
     public JButton button_RC;
+    public JButton button_Clear;
     public JButton button_Finalize;
     public JButton button_Delete;
-    public JButton button_Confirm;
+    public JButton button_Add;
+    private JButton negative;   //generate negative comments
+    private JButton positive;   //generate positive comments
+    public JButton filler;
+    // Labels
+    public JLabel label_commentField;
+    public JLabel label_selectedField;
     // TextField
     public TextField tField;
+    // TextArea
+    public JTextArea tArea;
     // JPanels
     public JPanel panel_left, panel_right, panel_bottom;
     public JPanel panel_right_sub1, panel_right_sub2, panel_right_sub3;
     // DefaultListModels
+    DefaultListModel<Comment> commentFieldList;
     DefaultListModel<Comment> commentList;
-
+    // ArrayList
+    ArrayList<Comment> list_array;
+    // booleans
+    private boolean first = true;
 
     /**
      * Empty constructor
@@ -59,26 +68,25 @@ public class MainFrame extends JFrame {
 
     /**
      * Constructor
-     *
      * @param title
      */
     public MainFrame(String title) {
         super(title);
         setLayout(new BorderLayout());
+        makeFrame(800,800);
 
     }
 
-    /**  Creates the first window to be displayed.
-     *
-     * @param w
-     * @param h
+    /**
+     * Creates the first window to be displayed
+     * @param w width
+     * @param h height
      */
     public void makeFrame(int w,  int h) {
-        // create priority queue
-        PriorityQueue<Comment> pq = Comment.query("", 1000);
 
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
+
                 frame = new JFrame(TITLE);        //made this 'JFrame' instead of 'MainFrame'
                 // new Color(82, 76, 76)
                 frame.getContentPane().setBackground(Color.DARK_GRAY); // main frame is white for viewing layout purpose
@@ -91,47 +99,80 @@ public class MainFrame extends JFrame {
                 panel_bottom = new JPanel();
                 panel_bottom.setBackground(Color.DARK_GRAY);
 
+                //adding button of negative and positive
+                negative = new JButton("Negative");
+                positive = new JButton("Positive");
+                panel_bottom.add(negative);
+                panel_bottom.add(positive);
+
+                //generate negative comments
+                negative.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        list_array = Comment.generateNegative();
+                        Helper.AddToDefaultList(list_array, commentFieldList);
+                    }
+                });
+
+                //generate positive comments
+                positive.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        list_array = Comment.generatePositive();
+                        Helper.AddToDefaultList(list_array, commentFieldList);
+                    }
+                });
 
                 // left panel
                 panel_left = new JPanel();
+                // @ todo setAligntment has no effect (??)
+//                panel_left.setAlignmentX(Component.CENTER_ALIGNMENT);
+//                panel_left.setAlignmentY(Component.BOTTOM_ALIGNMENT);
+                panel_left.setLayout(new BoxLayout(panel_left, BoxLayout.Y_AXIS));
                 panel_left.setBackground(Color.DARK_GRAY);
-
-//                panel_left.setBackground(new Color(82, 55, 173));
 
                 // right panel
                 panel_right = new JPanel();
                 panel_right.setBackground(Color.DARK_GRAY);
-//                panel_right.setBackground(new Color(0, 0, 0));
 
                 // right sub panels
                 panel_right_sub1 = new JPanel();
                 panel_right_sub2 = new JPanel();
                 panel_right_sub3 = new JPanel();
+
                 panel_right_sub1.setLayout(new BoxLayout(panel_right_sub1, BoxLayout.X_AXIS));
                 panel_right_sub2.setLayout(new BoxLayout(panel_right_sub2, BoxLayout.X_AXIS));
-                panel_right_sub3.setLayout(new BoxLayout(panel_right_sub3, BoxLayout.X_AXIS));
+                panel_right_sub3.setLayout(new BoxLayout(panel_right_sub3, BoxLayout.Y_AXIS));
+
+                //@todo sub1,2 color
                 panel_right_sub1.setBackground(Color.yellow);
-                panel_right_sub2.setBackground(Color.GREEN);
-                panel_right_sub3.setBackground(Color.CYAN);
+                panel_right_sub2.setBackground(Color.DARK_GRAY);
+                panel_right_sub3.setBackground(Color.DARK_GRAY);
 
                 panel_right.setLayout(new BoxLayout(panel_right, BoxLayout.Y_AXIS));
+
+                // ************************ method calls ************************
 
                 // menubar creation
                 makeMenuBar();
 
                 // Bottom
-                makeButton_Refresh("Refresh Comments");
-                makeButton_Finalize("Finalize");
-                makeButton_Delete("Delete");
+                makeButton_Refresh();
+                makeButton_Finalize();
+                makeButton_Delete();
 
                 // Left
-                makeCommentField(pq);
+                makeCommentFieldLabel();
+                makeCommentField();
 
                 // Right
+                // sub1
                 makeUserCommentField();
-                JButton Button_Clear = new JButton("Clear  ");
-                makeButtonUC_Clear("Clear  ", Button_Clear);
-                makeUC_Button("Confirm");
+                // sub2
+                makeButtonUC_Clear();
+                makeAdd_Button();
+                //sub3
+//                makeSelectedCommentLabel();
                 makeSelectedComment();
 
                 // add sub panels
@@ -139,13 +180,19 @@ public class MainFrame extends JFrame {
                 panel_right.add(panel_right_sub2);
                 panel_right.add(panel_right_sub3);
 
+                // failed code
+                // filler panel (center)
+//                JPanel panel_filler = new JPanel();
+//                JButton button_filler = new JButton();
+//                button_filler.setVisible(true);
+//                panel_filler.add(button_filler);
+//                panel_filler.setPreferredSize(panel_filler.getPreferredSize());
+//                panel_left.add(panel_filler, BorderLayout.WEST);
                 // add panels
                 frame.add(panel_left, BorderLayout.CENTER);
-                frame.add(panel_right, BorderLayout.EAST);
+                frame.add(panel_right, BorderLayout.LINE_END);
                 frame.add(panel_bottom, BorderLayout.SOUTH);
 
-
-//                frame.pack();
                 frame.setVisible(true);
             }
         });
@@ -154,57 +201,70 @@ public class MainFrame extends JFrame {
     // ************************* Left Panel *************************
 
     /**
-     *
-     * @param pq
+     * Creates Comment Field for users to choose comments from
      */
-    //@todo Make JScrollPane appear
-    public void makeCommentField(PriorityQueue<Comment> pq) {
+    public void makeCommentField() {
 
-        DefaultListModel<String> mode = new DefaultListModel<>();
+        commentFieldList = new DefaultListModel<>();
+        //@todo get rid of parameeter after demo
+        list_array = Comment.generateRandom();
+        Helper.AddToDefaultList(list_array, commentFieldList);
 
-        ArrayList<String> test = new ArrayList<>();
+        // use these methods to modify defaultlist
+//        commentFieldList.addElement();
+//        commentFieldList.remove();
 
-        for (int i=0; i<50; i++) {
-            test.add("test " + i);
-        }
-        list_refreshed = new JList(test.toArray());
-        //@todo set a size that's rescalable
-        list_refreshed.setPreferredSize(new Dimension(400,900));
-
-        //@todo list.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION); is not working
+        list_refreshed = new JList(commentFieldList);
         list_refreshed.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
+        list_refreshed.setBackground(Color.gray);
+        list_refreshed.setForeground(Color.white);
+        list_refreshed.setFont(new Font("", Font.PLAIN, 14));
         list_refreshed.setLayoutOrientation(JList.VERTICAL);
         list_refreshed.setVisibleRowCount(45);
         scroll_refreshed = new JScrollPane(list_refreshed);
-        list_refreshed.addMouseListener(new MouseListener() {
-            //Mouse Listener Interface
-            @Override
-            public void mouseClicked(MouseEvent e) { //On click
-                commentList.addElement(new Comment(test.get(list_refreshed.getSelectedIndex())));
-            }
 
+        //Mouse Listener Interface
+        list_refreshed.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+            }
             @Override
             public void mousePressed(MouseEvent e) {
-
+                if (first){
+                    first = false;
+                    commentList.remove(0);
+                }
+                commentList.addElement(list_array.get(list_refreshed.getSelectedIndex()));
+                // keeps focus on bottom
+                int size = list_selected.getModel().getSize();
+                list_selected.ensureIndexIsVisible( size - 1 );
             }
-
             @Override
             public void mouseReleased(MouseEvent e) {
 
             }
-
             @Override
             public void mouseEntered(MouseEvent e) {
 
             }
-
             @Override
             public void mouseExited(MouseEvent e) {
 
             }
         });
         panel_left.add(scroll_refreshed);
+    }
+
+    /**
+     * Creates a Label of description for CommentField
+     */
+    public void makeCommentFieldLabel() {
+
+        label_commentField = new JLabel("Choose your comments");
+        label_commentField.setFont(new Font("Berlin Sans FB Demi", Font.PLAIN, 20));
+        label_commentField.setForeground(Color.WHITE);
+        panel_left.add(label_commentField);
     }
 
     // ************************* Right Panel *************************
@@ -215,78 +275,93 @@ public class MainFrame extends JFrame {
      */
     public void makeUserCommentField() {
 
-        // @todo get rid of scroller
-        tField = new TextField("Test", 5);
-        tField.setText("Enter Custom Comment...");
-        panel_right_sub1.add(tField, BoxLayout.X_AXIS);
+//        tField = new TextField("Test", 5);
+//        tField.setText("Enter Custom Comment...");
+//        tField.setFont(new Font("", Font.PLAIN, 14));
+//        tField.setBackground(Color.gray);
+//        tField.setForeground(Color.white);
+
+        // @test
+        tArea = new JTextArea("Enter a comment...", 20, 40);
+        tArea.setPreferredSize(new Dimension(300,300));
+        JScrollPane js = new JScrollPane(tArea, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+
+        tArea.setLineWrap(true);
+        tArea.setWrapStyleWord(true);
+
+//        panel_right_sub1.add(tField);
+        panel_right_sub1.add(js);
         panel_right_sub1.setBackground(Color.CYAN);
         panel_right_sub1.setPreferredSize(new Dimension(100, 100));
-        panel_right_sub1.setMaximumSize(new Dimension(300, 300));   //
-        tField.addKeyListener(new KeyAdapter() {
+        panel_right_sub1.setMaximumSize(new Dimension(300, 300));
+
+        // @todo figure out what to do with "enter" bug.
+        // 1. delete enter functionality (easier fix at the expense of user friendliness)
+        // 2. find alternative (harder)
+        tArea.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
                 if(e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    commentList.addElement(new Comment(tField.getText()));
-                    tField.setText("");
+                    commentList.addElement(new Comment(tArea.getText()));
+                    tArea.setText(null);
+
+                    System.out.println("content: *" + tArea.getText() + "*");
                 }
+                // keeps focus on bottom
+                int size = list_selected.getModel().getSize();
+                list_selected.ensureIndexIsVisible( size - 1 );
             }
         });
-
-
-        JTextField tt = new JTextField();
     }
 
     // 2
     /**
-     * Creates confirm button for user made comments
-     * @param name
+     * Creates Add button for user made comments
      */
     // @todo make it appear below makeUserCommentField
-    public void makeUC_Button(String name) {
+    public void makeAdd_Button() {
 
-        button_Confirm = new JButton(name);
-        panel_right_sub2.add(button_Confirm, BoxLayout.X_AXIS);
-        button_Confirm.addActionListener(new ActionListener() {
+        button_Add = new JButton("add");
+        panel_right_sub2.add(button_Add, BoxLayout.X_AXIS);
+        button_Add.addActionListener(new ActionListener() {
 
-            // temp boolean
-            boolean first = true;
             // Sends the User Comment to makeSelectedComment
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                if (tField.getText().length() == 0) { // if empty string aka error, skip
+                if (tArea.getText().length() == 0) { // if empty string aka error, skip
+                    tArea.requestFocusInWindow();
                     return;
                 }
+                // reset the textfield
                 if (first){
                     first = false;
                     commentList.remove(0);
-                    commentList.addElement(new Comment(tField.getText()));
-                    tField.setText("");
-                    tField.requestFocusInWindow();
                 }
-                else {
-                    commentList.addElement(new Comment(tField.getText()));
-                    tField.setText(""); // reset the textfield
-                    tField.requestFocusInWindow();
-                }
+                commentList.addElement(new Comment(tArea.getText()));
+                tArea.setText("");
+                tArea.requestFocusInWindow();
+                // keeps focus on bottom
+                int size = list_selected.getModel().getSize();
+                list_selected.ensureIndexIsVisible( size - 1 );
             }
         });
     }
-    public void makeButtonUC_Clear(String name, JButton button_Clear) {
+    public void makeButtonUC_Clear() {
+        button_Clear = new JButton("Clear");
         panel_right_sub2.add(button_Clear, BoxLayout.X_AXIS);
         // deletes from SelectedComment
         button_Clear.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                tField.setText(""); // reset the textfield
-                tField.requestFocusInWindow();
+                tArea.setText(""); // reset the textArea
+                tArea.requestFocusInWindow();
             }
         });
     }
 
     // 3
 
-    //@todo figure out how to update
     /**
      * Creates selected, added comments JList
      */
@@ -294,10 +369,15 @@ public class MainFrame extends JFrame {
 
         commentList = new DefaultListModel<>();
 
-        commentList.addElement(new Comment("                                                                                                                    "));
-        list_selected = new JList((commentList));
+        // cheesed
+//        commentList.addElement(new Comment("                                                                                                                    "));
+        commentList.addElement(new Comment("                                                                       "));
+        list_selected = new JList(commentList);
         // @todo size
 //        list_selected.setPreferredSize(new Dimension(300, 750));
+        list_selected.setBackground(Color.gray);
+        list_selected.setForeground(Color.white);
+        list_selected.setFont(new Font("", Font.PLAIN, 14));
         list_selected.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         list_selected.setLayoutOrientation(JList.VERTICAL);
         list_selected.setVisibleRowCount(-1);
@@ -305,44 +385,46 @@ public class MainFrame extends JFrame {
 
 //        panel_right_sub3.add(list_selected, BoxLayout.X_AXIS);
         panel_right_sub3.add(scroll_selected);
-
-
-//        list_selected.addListSelectionListener(new ListSelectionListener() {
-//            @Override
-//            public void valueChanged(ListSelectionEvent e) {
-//
-//            }
-//        });
-
     }
+
+    public void makeSelectedCommentLabel() {
+        label_selectedField = new JLabel("Selected Comments");
+        label_selectedField.setFont(new Font("Berlin Sans FB Demi", Font.PLAIN, 20));
+        label_selectedField.setForeground(Color.WHITE);
+        panel_right_sub3.add(label_selectedField);
+    }
+
+
     //  ************************* Bottom Buttons *************************
 
     /**
      * Creates "Refresh Comments" button
      * Used to refresh comments on Jlist
      */
-    public void makeButton_Refresh(String name) {
+    public void makeButton_Refresh() {
         Comment cmnt = new Comment();
 
-        button_RC = new JButton(name);
+        button_RC = new JButton("Refresh");
 
         panel_bottom.add(button_RC, BorderLayout.WEST);
         button_RC.addActionListener(new ActionListener() {
 
             //@todo connect to database
-
             //Button clicked
             @Override
             public void actionPerformed(ActionEvent e) {
                 // test code
-//              @todo make JList refresh on button push
-
+                //@todo do something with DefaultListModel {@code CommentFieldList}
+                // get rid of parameter
+                Connection connection;
+                list_array = Comment.generateRandom();
+                Helper.AddToDefaultList(list_array, commentFieldList);
             }
         });
     }
     //Finalize button
-    public void makeButton_Finalize(String name) {
-        button_Finalize = new JButton(name);
+    public void makeButton_Finalize() {
+        button_Finalize = new JButton("Finish");
         panel_bottom.add(button_Finalize);
 
         button_Finalize.addActionListener(new ActionListener() {
@@ -350,20 +432,32 @@ public class MainFrame extends JFrame {
             //Button clicked
             @Override
             public void actionPerformed(ActionEvent e) {
+                JFileChooser fc = new JFileChooser();
+                FileFilter filter = new FileNameExtensionFilter(DESCRIPTION, EXTENSION);
+                fc.setAcceptAllFileFilterUsed(false);
+                fc.setFileFilter(filter);
 
+                int option = fc.showSaveDialog(frame);
+                if (option == JFileChooser.APPROVE_OPTION) {
 
+                    // temp for getting directory
+                    File fileToSave = fc.getSelectedFile();
 
-                List<Object> a = Arrays.asList(commentList.toArray());
-
-
-
+                    // save as pdf
+                    try {
+                        CreatePDF.createPDF_saveAs(fileToSave.getAbsolutePath(), Helper.toArrayList(commentList));
+                    } catch (IOException ioException) {
+                        ioException.printStackTrace();
+                    }
+                    System.out.println("Save as file: " + fileToSave.getAbsolutePath());
+                }
             }
         });
     }
 
     //Delete button
-    public void makeButton_Delete(String name) {
-        button_Delete = new JButton(name);
+    public void makeButton_Delete() {
+        button_Delete = new JButton("Delete");
         panel_bottom.add(button_Delete);
 
         // deletes from SelectedComment
@@ -375,6 +469,9 @@ public class MainFrame extends JFrame {
                 for (int i=indices.length-1; i>=0; i--) { // deletes the selected comments
                     commentList.remove(indices[i]);
                 }
+                // @todo demo ************************************************
+                int size = list_selected.getModel().getSize();
+                list_selected.ensureIndexIsVisible( size - 1 );
             }
         });
     }
@@ -388,37 +485,48 @@ public class MainFrame extends JFrame {
     // @todo implement correctly after rough GUI design
     public void makeMenuBar() {
         menuBar = new JMenuBar();
-        menu = new JMenu("File");
+        menu = new JMenu("General");    //TODO(DU) update the name
 
-        _file = new JMenuItem[3];
-        _file[0] = new JMenuItem("New"); // @To do: not sure what this should open
-        _file[1] = new JMenuItem("Save"); // saves progress
-        _file[2] = new JMenuItem("Save as"); // Options : PDF, Word document
+        menuItems = new JMenuItem[2];
+        menuItems[0] = new JMenuItem("Sign Up"); // allow users to create a new account
+        menuItems[1] = new JMenuItem("Save as"); // Options : PDF, Word document
 
 
-        for(int i=0; i<_file.length; i++) {
-            menu.add(_file[i]);
+        for(int i=0; i<menuItems.length; i++) {
+            menu.add(menuItems[i]);
         }
         menuBar.add(menu);
         frame.setJMenuBar(menuBar);
 
-        // Save as
+        //user sign up
+        menuItems[0].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
 
-        _file[2].addActionListener(new ActionListener() {
+            }
+        });
+
+        // Save as
+        menuItems[1].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JFileChooser fc = new JFileChooser();
-                FileFilter filter1 = new FileNameExtensionFilter(DESCRIPTION[0], EXTENSION[0]);
-                FileFilter filter2 = new FileNameExtensionFilter(DESCRIPTION[1], EXTENSION[1]);
+                FileFilter filter = new FileNameExtensionFilter(DESCRIPTION, EXTENSION);
                 fc.setAcceptAllFileFilterUsed(false);
-                fc.setFileFilter(filter1);
-                fc.setFileFilter(filter2);
+                fc.setFileFilter(filter);
 
-                //@todo implement saveDialog
                 int option = fc.showSaveDialog(frame);
                 if (option == JFileChooser.APPROVE_OPTION) {
 
+                    // temp for getting directory
                     File fileToSave = fc.getSelectedFile();
+
+                    // save as pdf
+                    try {
+                        CreatePDF.createPDF_saveAs(fileToSave.getAbsolutePath(), Helper.toArrayList(commentList));
+                    } catch (IOException ioException) {
+                        ioException.printStackTrace();
+                    }
                     System.out.println("Save as file: " + fileToSave.getAbsolutePath());
                 }
             }
@@ -426,9 +534,9 @@ public class MainFrame extends JFrame {
     }
 
 
-
-    // public void make_
-
+    public static void main(String[] args) {
+        new MainFrame("asasa");
+    }
 
 
 }
