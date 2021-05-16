@@ -28,9 +28,9 @@ public class UserLoginPage extends JFrame {
     public String globalUsername = "";   //record the current user
 
     //data should be mannually updated whenever a new user is using!!!
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/Test";
-    private static final String USER = "root";
-    private static final String PASSWORD = "dlx990330";
+//    private static final String DB_URL = "jdbc:mysql://localhost:3306/Test";
+//    private static final String USER = "root";
+//    private static final String PASSWORD = "dlx990330";
 
     /*TIM G*/
     //private static final String DB_URL = "jdbc:mysql://localhost:3306/e&e_gradingtool";
@@ -56,7 +56,6 @@ public class UserLoginPage extends JFrame {
         userName.setBounds(200, 100, 228, 50);
         userName.setColumns(10);
         panel.add(userName);
-
 
         //Last Name Input
         passwordLabel = new JLabel("Password: ");
@@ -87,7 +86,7 @@ public class UserLoginPage extends JFrame {
                 //String welcomeMessage = "" + fN;
                 //SELECT * FROM User.Users WHERE UserName="carter565" && Passwd="dlx123";
                 try {
-                    connection = DriverManager.getConnection(DB_URL,USER,PASSWORD);
+                    connection = DriverManager.getConnection(DatabaseInfo.DB_URL.toString(),DatabaseInfo.USER.toString(),DatabaseInfo.PASSWORD.toString());
                     String query = "SELECT UserPassword FROM User WHERE UserName=" + "\"" + usernameField + "\"" + ";";
                     Statement statement = connection.createStatement();
                     ResultSet resultSet = statement.executeQuery(query);

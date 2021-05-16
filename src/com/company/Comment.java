@@ -34,7 +34,7 @@ public class Comment {
 //        }
         Connection connection;
         try {
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Test", "root", "dlx990330");
+            connection = DriverManager.getConnection(DatabaseInfo.DB_URL.toString(), DatabaseInfo.USER.toString(), DatabaseInfo.PASSWORD.toString());
             //assuming good comment 1, bad comment 0
             String query = "SELECT * FROM Test.Text ORDER BY RAND() LIMIT 20";
             Statement statement = connection.createStatement();
@@ -64,7 +64,7 @@ public class Comment {
 //        }
         Connection connection;
         try {
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Test", "root", "dlx990330");
+            connection = DriverManager.getConnection(DatabaseInfo.DB_URL.toString(), DatabaseInfo.USER.toString(), DatabaseInfo.PASSWORD.toString());
             //assuming good comment 1, bad comment 0
             String query = "SELECT * FROM Test.Text WHERE CATEGORY=0 ORDER BY RAND() LIMIT 15";
             Statement statement = connection.createStatement();
@@ -94,7 +94,7 @@ public class Comment {
 //        }
         Connection connection;
         try {
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Test", "root", "dlx990330");
+            connection = DriverManager.getConnection(DatabaseInfo.DB_URL.toString(), DatabaseInfo.USER.toString(), DatabaseInfo.PASSWORD.toString());
             //assuming good comment 1, bad comment 0
             String query = "SELECT * FROM Test.Text WHERE CATEGORY=1 ORDER BY RAND() LIMIT 15";
             Statement statement = connection.createStatement();

@@ -71,11 +71,11 @@ public class WelcomePage extends JFrame {
 
         try {
 
-            BufferedImage daneLogo = ImageIO.read(new File("src/com/company/GreatDane.jpg"));
+            BufferedImage daneLogo = ImageIO.read(new File("src/com/company/pictures/GreatDane.jpg"));
             Image daneImage = daneLogo.getScaledInstance(100, 100, Image.SCALE_DEFAULT);  //resizing the image
             dane = new JLabel(new ImageIcon(daneImage));
 
-            BufferedImage ualbanyLogo = ImageIO.read(new File("src/com/company/ualbanyLOGO.jpeg"));
+            BufferedImage ualbanyLogo = ImageIO.read(new File("src/com/company/pictures/ualbanyLOGO.jpeg"));
             Image albanyImage = ualbanyLogo.getScaledInstance(100, 100, Image.SCALE_REPLICATE); //resizing the image
             ualbany = new JLabel(new ImageIcon(albanyImage));
 
